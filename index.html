@@ -1,0 +1,3998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Beard Family Christmas</title>
+  <meta name="description" content="The Beard Family Christmas holiday home — interactive lights, festive games, Santa letters, family wish list, thank-you card studio, advent calendar, and more." />
+  <meta name="robots" content="noindex, nofollow" />
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      scroll-behavior: smooth;
+    }
+
+    .beard-app {
+      --pine-deep: #0e231c;
+      --pine: #16372b;
+      --pine-mid: #1f4c3b;
+      --pine-soft: #e8f0ec;
+      --crimson: #9e2228;
+      --crimson-bright: #be2a31;
+      --crimson-soft: #faeaea;
+      --gold: #c6973a;
+      --gold-light: #e7c677;
+      --gold-soft: #fbf4e3;
+      --cream: #fcf7ee;
+      --parchment: #f5ecdc;
+      --paper: #fffdf9;
+      --night: #0d1b26;
+      --night-mid: #152b3c;
+      --ink: #241e1b;
+      --ink-muted: #5d534b;
+      --border: #e3d6c2;
+      --shadow-sm: 0 2px 8px rgba(14, 35, 28, 0.07);
+      --shadow-md: 0 10px 30px rgba(14, 35, 28, 0.11);
+      --shadow-lg: 0 20px 50px rgba(14, 35, 28, 0.18);
+      --font-display: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, "Times New Roman", serif;
+      --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+      font-family: var(--font-sans);
+      color: var(--ink);
+      background-color: var(--cream);
+      background-image:
+        radial-gradient(circle at 12% 10%, rgba(198, 151, 58, 0.08) 0%, transparent 45%),
+        radial-gradient(circle at 88% 20%, rgba(158, 34, 40, 0.06) 0%, transparent 42%);
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+      line-height: 1.55;
+      font-size: 15px;
+    }
+
+    /* Snowfall canvas */
+    #snowCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 60;
+    }
+
+    /* Top Interactive Christmas Lights Strand */
+    .lights-bar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: linear-gradient(180deg, #0b1b16 0%, #122b22 100%);
+      border-bottom: 1px solid rgba(231, 198, 119, 0.28);
+      box-shadow: 0 6px 22px rgba(7, 18, 14, 0.35);
+    }
+
+    .strand-wrap {
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 12px;
+      height: 46px;
+      overflow: hidden;
+    }
+
+    .strand-wire {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 46px;
+      pointer-events: none;
+    }
+
+    .bulbs-row {
+      position: relative;
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-start;
+      height: 46px;
+      z-index: 2;
+    }
+
+    .bulb-btn {
+      background: none;
+      border: none;
+      padding: 0 3px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.2s ease;
+      outline: none;
+    }
+
+    .bulb-btn:hover {
+      transform: scale(1.18) rotate(-4deg);
+    }
+
+    .bulb-btn:focus-visible {
+      outline: 2px solid var(--gold-light);
+      border-radius: 6px;
+    }
+
+    .bulb-socket {
+      width: 7px;
+      height: 7px;
+      background: #2f4338;
+      border-radius: 2px 2px 0 0;
+      border: 1px solid #4d6759;
+    }
+
+    .bulb-glass {
+      width: 13px;
+      height: 19px;
+      border-radius: 50% 50% 50% 50% / 38% 38% 62% 62%;
+      position: relative;
+      transition: opacity 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+    }
+
+    .bulb-glass::after {
+      content: "";
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 3px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.55);
+    }
+
+    .bulb-btn.is-off .bulb-glass {
+      opacity: 0.24;
+      box-shadow: none !important;
+      filter: saturate(0.3);
+    }
+
+    /* Header & Navigation */
+    .header-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 10px 20px 12px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      cursor: pointer;
+      text-decoration: none;
+      color: var(--cream);
+    }
+
+    .brand-crest {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #be2a31, #7f171c);
+      border: 2px solid var(--gold-light);
+      display: grid;
+      place-items: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 20px;
+      color: #fff6dc;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.28);
+      flex-shrink: 0;
+    }
+
+    .brand-text strong {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 18px;
+      letter-spacing: 0.02em;
+      color: #fff8eb;
+      line-height: 1.1;
+    }
+
+    .brand-text span {
+      display: block;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      margin-top: 2px;
+    }
+
+    .main-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .nav-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: #e4ded3;
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: var(--font-sans);
+    }
+
+    .nav-btn:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.09);
+    }
+
+    .nav-btn.active {
+      background: var(--crimson);
+      color: #fffaf2;
+      border-color: rgba(231, 198, 119, 0.45);
+      box-shadow: 0 3px 10px rgba(158, 34, 40, 0.35);
+    }
+
+    .quick-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .ctrl-chip {
+      background: rgba(255, 255, 255, 0.09);
+      border: 1px solid rgba(231, 198, 119, 0.28);
+      color: #f8f0df;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s ease;
+    }
+
+    .ctrl-chip:hover {
+      background: rgba(255, 255, 255, 0.16);
+    }
+
+    .ctrl-chip.is-on {
+      background: rgba(198, 151, 58, 0.24);
+      border-color: var(--gold-light);
+      color: #fff6dc;
+    }
+
+    /* Main Content Container */
+    .main-wrap {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 28px 20px 72px;
+    }
+
+    .page-section {
+      display: none;
+      animation: fadeUp 0.3s ease;
+    }
+
+    .page-section.active {
+      display: block;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Hero Banner */
+    .hero-banner {
+      position: relative;
+      border-radius: 24px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 80% 18%, rgba(231, 198, 119, 0.2) 0%, transparent 40%),
+        radial-gradient(circle at 18% 82%, rgba(158, 34, 40, 0.25) 0%, transparent 45%),
+        linear-gradient(135deg, #0d1f19 0%, #173a2d 52%, #132836 100%);
+      color: #fff8ee;
+      padding: 40px 36px;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid rgba(231, 198, 119, 0.32);
+      display: grid;
+      grid-template-columns: 1.25fr 0.95fr;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .hero-eyebrow {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--gold-light);
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .hero-banner h1 {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 4.4vw, 50px);
+      line-height: 1.08;
+      margin: 0 0 14px;
+      letter-spacing: -0.01em;
+      color: #fffaf0;
+    }
+
+    .hero-banner p {
+      color: #ded6c7;
+      font-size: 16px;
+      max-width: 52ch;
+      margin: 0 0 24px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    /* Countdown Box */
+    .countdown-panel {
+      background: rgba(9, 20, 17, 0.54);
+      border: 1px solid rgba(231, 198, 119, 0.34);
+      border-radius: 18px;
+      padding: 22px 20px;
+      text-align: center;
+      backdrop-filter: blur(6px);
+    }
+
+    .countdown-title {
+      font-family: var(--font-display);
+      font-size: 16px;
+      color: var(--gold-light);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin: 0 0 14px;
+    }
+
+    .countdown-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .cd-unit {
+      background: rgba(255, 250, 240, 0.08);
+      border: 1px solid rgba(231, 198, 119, 0.2);
+      border-radius: 12px;
+      padding: 12px 6px;
+    }
+
+    .cd-num {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: clamp(22px, 3vw, 32px);
+      font-weight: 700;
+      color: #fffaf0;
+      line-height: 1.1;
+    }
+
+    .cd-label {
+      display: block;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #cfc4b0;
+      margin-top: 4px;
+    }
+
+    .countdown-note {
+      margin-top: 14px;
+      font-size: 13px;
+      color: #e4d9c5;
+      font-style: italic;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 10px 18px;
+      border-radius: 11px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: transform 0.15s ease, background 0.2s ease, box-shadow 0.2s ease;
+      font-family: var(--font-sans);
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(180deg, var(--crimson-bright) 0%, var(--crimson) 100%);
+      color: #fffaf2;
+      box-shadow: 0 4px 14px rgba(158, 34, 40, 0.28);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(180deg, #cf3139 0%, #a92329 100%);
+      box-shadow: 0 6px 18px rgba(158, 34, 40, 0.36);
+    }
+
+    .btn-gold {
+      background: linear-gradient(180deg, #d7aa4c 0%, #ba8b2f 100%);
+      color: #1f1608;
+      box-shadow: 0 4px 12px rgba(186, 139, 47, 0.26);
+    }
+
+    .btn-gold:hover {
+      background: linear-gradient(180deg, #e1b860 0%, #c69637 100%);
+    }
+
+    .btn-pine {
+      background: var(--pine);
+      color: #fffaf2;
+    }
+
+    .btn-pine:hover {
+      background: var(--pine-mid);
+    }
+
+    .btn-outline {
+      background: var(--paper);
+      color: var(--pine);
+      border-color: var(--border);
+    }
+
+    .btn-outline:hover {
+      background: var(--parchment);
+      border-color: #c9b597;
+    }
+
+    .btn-ghost-light {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff8eb;
+      border-color: rgba(231, 198, 119, 0.38);
+    }
+
+    .btn-ghost-light:hover {
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 13px;
+      border-radius: 8px;
+    }
+
+    /* Section Headings */
+    .section-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .section-head h2 {
+      font-family: var(--font-display);
+      font-size: clamp(25px, 3vw, 34px);
+      color: var(--pine-deep);
+      margin: 0;
+      line-height: 1.15;
+    }
+
+    .section-head p {
+      margin: 6px 0 0;
+      color: var(--ink-muted);
+      max-width: 64ch;
+    }
+
+    /* Surface Cards */
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .card-warm {
+      background: linear-gradient(180deg, #fffdf9 0%, #f8efe1 100%);
+      border: 1px solid #dfcfb6;
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Home Room Directory Grid */
+    .rooms-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    .room-card {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 20px;
+      text-align: left;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-family: var(--font-sans);
+    }
+
+    .room-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--gold);
+    }
+
+    .room-icon {
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .room-card h3 {
+      margin: 2px 0 0;
+      font-family: var(--font-display);
+      font-size: 19px;
+      color: var(--pine-deep);
+    }
+
+    .room-card p {
+      margin: 0;
+      font-size: 13.5px;
+      color: var(--ink-muted);
+      line-height: 1.45;
+    }
+
+    .room-link {
+      margin-top: auto;
+      padding-top: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--crimson);
+    }
+
+    /* Interactive Tree Decorator on Home */
+    .tree-studio {
+      margin-top: 32px;
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .tree-stage {
+      background: radial-gradient(circle at 50% 30%, #1b4335 0%, #0d211a 100%);
+      border-radius: 20px;
+      padding: 18px;
+      position: relative;
+      border: 1px solid rgba(231, 198, 119, 0.35);
+      box-shadow: var(--shadow-md);
+      text-align: center;
+      user-select: none;
+    }
+
+    .tree-svg-wrap {
+      position: relative;
+      max-width: 420px;
+      margin: 0 auto;
+      cursor: crosshair;
+    }
+
+    .tree-hint {
+      color: #e8decb;
+      font-size: 13px;
+      margin: 8px 0 0;
+    }
+
+    .ornament-palette {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+      gap: 8px;
+      margin: 12px 0 18px;
+    }
+
+    .orn-pick {
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 6px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ink);
+      transition: all 0.15s ease;
+    }
+
+    .orn-pick:hover {
+      border-color: var(--gold);
+      background: var(--gold-soft);
+    }
+
+    .orn-pick.selected {
+      background: var(--crimson-soft);
+      border-color: var(--crimson);
+      color: var(--crimson);
+      box-shadow: 0 0 0 2px rgba(158, 34, 40, 0.14);
+    }
+
+    .orn-pick span.emo {
+      font-size: 22px;
+    }
+
+    /* Music Box Bar */
+    .music-bar {
+      margin-top: 24px;
+      background: linear-gradient(135deg, #16372b 0%, #10261e 100%);
+      color: #fff8eb;
+      border-radius: 18px;
+      padding: 18px 22px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      border: 1px solid rgba(231, 198, 119, 0.3);
+    }
+
+    .music-bar h3 {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 19px;
+      color: #fff7e6;
+    }
+
+    .music-bar p {
+      margin: 2px 0 0;
+      font-size: 13px;
+      color: #cfc7b8;
+    }
+
+    .music-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .music-select {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fffaf0;
+      border: 1px solid rgba(231, 198, 119, 0.35);
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 13.5px;
+      font-family: var(--font-sans);
+    }
+
+    .music-select option {
+      color: var(--ink);
+      background: #fffdf9;
+    }
+
+    /* Light Show Studio */
+    .cottage-stage {
+      background: linear-gradient(180deg, #07131e 0%, #10263a 58%, #1d3c47 100%);
+      border-radius: 22px;
+      padding: 20px;
+      border: 1px solid rgba(231, 198, 119, 0.32);
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .light-controls-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .pill-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 10px;
+    }
+
+    .pill-btn {
+      background: var(--cream);
+      border: 1px solid var(--border);
+      color: var(--ink);
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .pill-btn:hover {
+      border-color: var(--gold);
+    }
+
+    .pill-btn.active {
+      background: var(--pine);
+      color: #fffaf2;
+      border-color: var(--pine);
+    }
+
+    /* Form Controls */
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .field label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--pine-deep);
+    }
+
+    .input, .textarea, .select {
+      width: 100%;
+      background: #ffffff;
+      border: 1px solid #d5c5ae;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 14px;
+      color: var(--ink);
+      font-family: var(--font-sans);
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .input:focus, .textarea:focus, .select:focus {
+      outline: none;
+      border-color: var(--crimson);
+      box-shadow: 0 0 0 3px rgba(158, 34, 40, 0.12);
+    }
+
+    .textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    /* Games Arcade */
+    .subtabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .subtab {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      color: var(--ink);
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+
+    .subtab:hover {
+      border-color: var(--gold);
+    }
+
+    .subtab.active {
+      background: var(--crimson);
+      color: #fffaf2;
+      border-color: var(--crimson);
+    }
+
+    .game-panel {
+      display: none;
+    }
+
+    .game-panel.active {
+      display: block;
+    }
+
+    .catcher-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .catcher-hud {
+      width: 100%;
+      max-width: 680px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      background: var(--pine-deep);
+      color: #fffaf0;
+      padding: 12px 18px;
+      border-radius: 14px;
+      font-size: 14px;
+    }
+
+    .catcher-hud strong {
+      color: var(--gold-light);
+      font-family: var(--font-mono);
+      font-size: 16px;
+    }
+
+    #catcherCanvas {
+      width: 100%;
+      max-width: 680px;
+      aspect-ratio: 680 / 390;
+      border-radius: 16px;
+      border: 2px solid var(--gold);
+      background: #0d1f2d;
+      box-shadow: var(--shadow-md);
+      touch-action: none;
+      display: block;
+    }
+
+    /* Memory Game */
+    .memory-grid {
+      display: grid;
+      gap: 12px;
+      max-width: 560px;
+      margin: 18px auto 0;
+    }
+
+    .memory-grid.cols-4 {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .mem-card {
+      aspect-ratio: 1 / 1;
+      perspective: 700px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+    }
+
+    .mem-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+      transform-style: preserve-3d;
+    }
+
+    .mem-card.flipped .mem-inner,
+    .mem-card.matched .mem-inner {
+      transform: rotateY(180deg);
+    }
+
+    .mem-face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      border-radius: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--border);
+    }
+
+    .mem-front {
+      background: repeating-linear-gradient(
+        45deg,
+        #16372b,
+        #16372b 10px,
+        #1c4536 10px,
+        #1c4536 20px
+      );
+      border-color: var(--gold);
+      color: var(--gold-light);
+      font-family: var(--font-display);
+      font-size: 26px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .mem-back {
+      background: #fffdf8;
+      transform: rotateY(180deg);
+      border-color: var(--gold);
+      gap: 4px;
+    }
+
+    .mem-card.matched .mem-back {
+      background: #eef8f1;
+      border-color: #2f855a;
+    }
+
+    .mem-back .mem-emo {
+      font-size: clamp(26px, 4.5vw, 38px);
+      line-height: 1;
+    }
+
+    .mem-back .mem-lbl {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--pine-deep);
+    }
+
+    /* Trivia */
+    .trivia-box {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .trivia-q {
+      font-family: var(--font-display);
+      font-size: 22px;
+      color: var(--pine-deep);
+      margin: 12px 0 18px;
+    }
+
+    .trivia-options {
+      display: grid;
+      gap: 10px;
+    }
+
+    .trivia-opt {
+      text-align: left;
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 13px 16px;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--ink);
+      cursor: pointer;
+      transition: all 0.16s ease;
+    }
+
+    .trivia-opt:hover:not(:disabled) {
+      border-color: var(--gold);
+      background: var(--gold-soft);
+    }
+
+    .trivia-opt.correct {
+      background: #e6f6ec;
+      border-color: #2b7a4b;
+      color: #154d2b;
+    }
+
+    .trivia-opt.wrong {
+      background: #fceaea;
+      border-color: #b82930;
+      color: #7b181d;
+    }
+
+    /* Santa Letters Air-Mail Stationery */
+    .santa-layout {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .airmail-card {
+      background: var(--paper);
+      border-radius: 20px;
+      padding: 10px;
+      background-image: repeating-linear-gradient(
+        135deg,
+        #b82930 0px,
+        #b82930 14px,
+        #fffdf9 14px,
+        #fffdf9 26px,
+        #1e563f 26px,
+        #1e563f 40px,
+        #fffdf9 40px,
+        #fffdf9 52px
+      );
+      box-shadow: var(--shadow-md);
+    }
+
+    .airmail-inner {
+      background: #fffcf5;
+      border-radius: 14px;
+      padding: 24px;
+      border: 1px solid #e6d7be;
+    }
+
+    .north-pole-stamp {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      border: 2px dashed var(--crimson);
+      padding: 6px 10px;
+      border-radius: 8px;
+      color: var(--crimson);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1.2;
+      transform: rotate(3deg);
+    }
+
+    .santa-reply-paper {
+      background: linear-gradient(180deg, #fffdf7 0%, #f6ebd5 100%);
+      border: 2px solid var(--gold);
+      border-radius: 18px;
+      padding: 26px;
+      position: relative;
+      box-shadow: var(--shadow-md);
+    }
+
+    .wax-seal {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #cc3038, #7e1419);
+      border: 2px solid #e7b5b7;
+      color: #ffefd1;
+      display: grid;
+      place-items: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 20px;
+      box-shadow: 0 4px 12px rgba(126, 20, 25, 0.38);
+    }
+
+    .mailbox-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .mail-item {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    /* Wish List */
+    .wish-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .wish-grid {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .wish-item {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+      transition: border-color 0.15s ease;
+    }
+
+    .wish-item.is-claimed {
+      background: #f1f8f3;
+      border-color: #88bc9b;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 11.5px;
+      font-weight: 700;
+    }
+
+    .badge-crimson { background: var(--crimson-soft); color: var(--crimson); }
+    .badge-gold { background: var(--gold-soft); color: #7e5913; }
+    .badge-pine { background: var(--pine-soft); color: var(--pine); }
+
+    /* Thank You Studio */
+    .thanks-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .ty-preview {
+      border-radius: 20px;
+      padding: 30px;
+      min-height: 310px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--shadow-md);
+      position: relative;
+      transition: all 0.25s ease;
+    }
+
+    .ty-preview.theme-holly {
+      background: linear-gradient(155deg, #fffdf8 0%, #f9efe0 100%);
+      border: 3px double var(--crimson);
+      color: var(--ink);
+    }
+
+    .ty-preview.theme-pine {
+      background: linear-gradient(155deg, #133226 0%, #1c4737 100%);
+      border: 3px double var(--gold-light);
+      color: #fff9ee;
+    }
+
+    .ty-preview.theme-northpole {
+      background: linear-gradient(155deg, #fffaf4 0%, #f6e7d8 100%);
+      border: 4px dashed var(--crimson);
+      color: var(--ink);
+    }
+
+    .ty-preview.theme-cocoa {
+      background: linear-gradient(155deg, #3c2317 0%, #5a3523 100%);
+      border: 3px solid var(--gold-light);
+      color: #fff6ea;
+    }
+
+    .gratitude-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .gratitude-note {
+      background: #fffdf8;
+      border: 1px solid #e1d0b5;
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    /* Advent Calendar */
+    .advent-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .advent-door {
+      aspect-ratio: 1 / 1.05;
+      border-radius: 14px;
+      border: 2px solid var(--gold);
+      background: linear-gradient(160deg, #9e2228 0%, #77161b 100%);
+      color: #fff7e6;
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+      padding: 8px;
+      text-align: center;
+    }
+
+    .advent-door:nth-child(3n) {
+      background: linear-gradient(160deg, #173d2f 0%, #0f291f 100%);
+    }
+
+    .advent-door:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .advent-door.opened {
+      background: #fffdf7;
+      color: var(--pine-deep);
+      border-color: var(--pine-mid);
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .advent-door.locked {
+      opacity: 0.65;
+    }
+
+    /* Nice List Certificate */
+    .cert-frame {
+      background: linear-gradient(180deg, #fffdf6 0%, #f5e8ce 100%);
+      border: 6px double var(--gold);
+      border-radius: 18px;
+      padding: 32px 26px;
+      text-align: center;
+      position: relative;
+      box-shadow: var(--shadow-md);
+    }
+
+    .cert-frame h3 {
+      font-family: var(--font-display);
+      font-size: clamp(24px, 3vw, 34px);
+      color: var(--crimson);
+      margin: 8px 0;
+    }
+
+    .cert-name {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 3.6vw, 40px);
+      color: var(--pine-deep);
+      border-bottom: 2px solid var(--gold);
+      display: inline-block;
+      padding: 2px 24px 6px;
+      margin: 10px 0 14px;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 22px;
+      right: 22px;
+      background: var(--pine-deep);
+      color: #fffaf0;
+      border: 1px solid var(--gold-light);
+      padding: 12px 18px;
+      border-radius: 12px;
+      box-shadow: var(--shadow-lg);
+      font-size: 14px;
+      font-weight: 600;
+      z-index: 100;
+      opacity: 0;
+      transform: translateY(14px);
+      pointer-events: none;
+      transition: all 0.25s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Footer */
+    .site-footer {
+      text-align: center;
+      padding: 28px 20px 42px;
+      border-top: 1px solid var(--border);
+      color: var(--ink-muted);
+      font-size: 13.5px;
+      background: rgba(245, 236, 220, 0.55);
+    }
+
+    .site-footer strong {
+      font-family: var(--font-display);
+      color: var(--pine-deep);
+      font-size: 16px;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .hero-banner,
+      .tree-studio,
+      .santa-layout,
+      .wish-grid,
+      .thanks-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-banner {
+        padding: 28px 22px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .countdown-grid {
+        gap: 6px;
+      }
+
+      .header-inner {
+        padding: 8px 14px 10px;
+      }
+
+      .main-wrap {
+        padding: 20px 14px 56px;
+      }
+    }
+
+    /* Private Family Login Gate */
+    .beard-app.is-locked .lights-bar,
+    .beard-app.is-locked .main-wrap,
+    .beard-app.is-locked .site-footer {
+      display: none;
+    }
+
+    .login-gate {
+      display: none;
+      min-height: 100vh;
+      width: 100%;
+      padding: 28px 18px;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(231, 198, 119, 0.16) 0%, transparent 45%),
+        radial-gradient(circle at 82% 80%, rgba(158, 34, 40, 0.22) 0%, transparent 48%),
+        linear-gradient(145deg, #0a1a15 0%, #143328 52%, #0e212e 100%);
+      position: relative;
+      z-index: 55;
+    }
+
+    .beard-app.is-locked .login-gate {
+      display: flex;
+    }
+
+    .login-card {
+      width: 100%;
+      max-width: 430px;
+      background: linear-gradient(180deg, #fffdf9 0%, #f6ecdb 100%);
+      border: 2px solid var(--gold);
+      border-radius: 24px;
+      padding: 34px 30px 28px;
+      box-shadow: 0 24px 60px rgba(4, 12, 10, 0.48);
+      position: relative;
+      text-align: center;
+    }
+
+    .login-card.shake {
+      animation: gateShake 0.36s ease;
+    }
+
+    @keyframes gateShake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-8px); }
+      40% { transform: translateX(8px); }
+      60% { transform: translateX(-5px); }
+      80% { transform: translateX(5px); }
+    }
+
+    .login-crest {
+      width: 62px;
+      height: 62px;
+      margin: 0 auto 14px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #be2a31, #7c151b);
+      border: 3px solid var(--gold-light);
+      color: #fff6dc;
+      font-family: var(--font-display);
+      font-size: 30px;
+      font-weight: 700;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 6px 18px rgba(124, 21, 27, 0.35);
+    }
+
+    .login-card h1 {
+      font-family: var(--font-display);
+      font-size: 27px;
+      color: var(--pine-deep);
+      margin: 0 0 6px;
+      line-height: 1.15;
+    }
+
+    .login-sub {
+      margin: 0 0 22px;
+      font-size: 13.5px;
+      color: var(--ink-muted);
+    }
+
+    .login-form {
+      text-align: left;
+    }
+
+    .pw-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .pw-wrap .input {
+      padding-right: 44px;
+    }
+
+    .pw-toggle {
+      position: absolute;
+      right: 8px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      padding: 4px 6px;
+      color: var(--ink-muted);
+      border-radius: 6px;
+    }
+
+    .pw-toggle:hover {
+      background: rgba(14, 35, 28, 0.06);
+    }
+
+    .remember-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--ink-muted);
+      margin: 4px 0 16px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .remember-row input {
+      accent-color: var(--crimson);
+      width: 15px;
+      height: 15px;
+      cursor: pointer;
+    }
+
+    .login-error {
+      display: none;
+      background: var(--crimson-soft);
+      border: 1px solid #e3a7aa;
+      color: var(--crimson);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 9px 12px;
+      border-radius: 10px;
+      margin-bottom: 14px;
+      text-align: center;
+    }
+
+    .login-error.show {
+      display: block;
+    }
+
+    .login-foot {
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+      font-size: 12.5px;
+      color: var(--ink-muted);
+    }
+
+    @media print {
+      .lights-bar, .site-footer, #snowCanvas, .no-print, .login-gate {
+        display: none !important;
+      }
+      .beard-app {
+        background: #ffffff !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="beard-app is-locked" id="beardApp">
+    <canvas id="snowCanvas" aria-hidden="true"></canvas>
+
+    <!-- Private Family Login Gate -->
+    <div class="login-gate" id="loginGate" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+      <div class="login-card" id="loginCard">
+        <div class="login-crest" aria-hidden="true">B</div>
+        <h1 id="loginTitle">The Beard Family Christmas</h1>
+        <p class="login-sub">Private Family Holiday Home • Beards &amp; Ramsurns</p>
+
+        <form class="login-form" id="loginForm" autocomplete="on">
+          <div class="field">
+            <label for="loginUser">Family Username</label>
+            <input id="loginUser" class="input" type="text" required autocomplete="username" placeholder="Enter family username" />
+          </div>
+
+          <div class="field">
+            <label for="loginPass">Password</label>
+            <div class="pw-wrap">
+              <input id="loginPass" class="input" type="password" required autocomplete="current-password" placeholder="Enter holiday password" />
+              <button type="button" class="pw-toggle" id="pwToggleBtn" aria-label="Show or hide password" title="Show or hide password">👁️</button>
+            </div>
+          </div>
+
+          <label class="remember-row">
+            <input type="checkbox" id="loginRemember" checked />
+            Keep me signed in on this device
+          </label>
+
+          <div class="login-error" id="loginError" role="alert">
+            Oops! That username or password isn't on Santa's list. Please try again.
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width:100%;">🎄 Enter Holiday Home</button>
+        </form>
+
+        <div class="login-foot">
+          ✨ Private holiday portal for the Beard &amp; Ramsurn families
+        </div>
+      </div>
+    </div>
+
+    <!-- Sticky Christmas Lights Strand & Navigation -->
+    <header class="lights-bar">
+      <div class="strand-wrap" aria-label="Interactive Christmas Lights Strand">
+        <svg class="strand-wire" viewBox="0 0 1200 46" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0,4 Q150,24 300,8 T600,10 T900,8 T1200,4" fill="none" stroke="#2c4439" stroke-width="3" />
+        </svg>
+        <div class="bulbs-row" id="topBulbsRow"></div>
+      </div>
+
+      <div class="header-inner">
+        <a class="brand" href="#home" id="brandHomeLink">
+          <div class="brand-crest" aria-hidden="true">B</div>
+          <div class="brand-text">
+            <strong>The Beard Family Christmas</strong>
+            <span>North Pole Family HQ</span>
+          </div>
+        </a>
+
+        <nav class="main-nav" aria-label="Primary Navigation">
+          <button class="nav-btn active" data-section="home">Home &amp; Tree</button>
+          <button class="nav-btn" data-section="lights">Lights</button>
+          <button class="nav-btn" data-section="games">Games</button>
+          <button class="nav-btn" data-section="santa">Santa Letters</button>
+          <button class="nav-btn" data-section="wishlist">Wish List</button>
+          <button class="nav-btn" data-section="thankyou">Thank You</button>
+          <button class="nav-btn" data-section="extras">Family Magic</button>
+        </nav>
+
+        <div class="quick-controls">
+          <button class="ctrl-chip is-on" id="snowToggleBtn" title="Toggle falling snow">❄️ Snow</button>
+          <button class="ctrl-chip is-on" id="sfxToggleBtn" title="Toggle festive chimes">🔔 Chimes</button>
+          <button class="ctrl-chip" id="quickMusicBtn" title="Play or pause holiday music box">🎵 Music</button>
+          <button class="ctrl-chip" id="logoutBtn" title="Sign out and lock the family site">🔒 Sign Out</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="main-wrap">
+      <!-- ==================== HOME & TREE ==================== -->
+      <section class="page-section active" id="sec-home">
+        <div class="hero-banner">
+          <div>
+            <div class="hero-eyebrow" id="heroEyebrow">★ Welcome Home, Beard Family ★</div>
+            <h1>Merry Christmas from the Beards!</h1>
+            <p>
+              Gather around the virtual hearth! Click any twinkling bulb above, decorate the Beard Family tree together, play holiday games, send a letter straight to Santa, build our family wish list, and write heartfelt thank-you cards.
+            </p>
+            <div class="hero-actions">
+              <button class="btn btn-gold" data-jump="santa">✉️ Write to Santa</button>
+              <button class="btn btn-primary" data-jump="games">🎮 Play Holiday Games</button>
+              <button class="btn btn-ghost-light" data-jump="wishlist">🎁 Family Wish List</button>
+            </div>
+          </div>
+
+          <div class="countdown-panel" aria-live="polite">
+            <div class="countdown-title" id="cdHeading">Countdown to Christmas Day</div>
+            <div class="countdown-grid">
+              <div class="cd-unit"><span class="cd-num" id="cdDays">--</span><span class="cd-label">Days</span></div>
+              <div class="cd-unit"><span class="cd-num" id="cdHours">--</span><span class="cd-label">Hours</span></div>
+              <div class="cd-unit"><span class="cd-num" id="cdMins">--</span><span class="cd-label">Mins</span></div>
+              <div class="cd-unit"><span class="cd-num" id="cdSecs">--</span><span class="cd-label">Secs</span></div>
+            </div>
+            <div class="countdown-note" id="cdSubnote">Cocoa is warming &amp; sleigh bells are tuning up!</div>
+          </div>
+        </div>
+
+        <!-- Holiday Music Box Strip -->
+        <div class="music-bar">
+          <div>
+            <h3>🎶 Beard Family Holiday Music Box</h3>
+            <p>Gentle winter chimes built right in — pick a carol to fill the room while you explore.</p>
+          </div>
+          <div class="music-controls">
+            <select id="songSelect" class="music-select" aria-label="Choose a Christmas carol">
+              <option value="jingle">Jingle Bells</option>
+              <option value="wish">We Wish You a Merry Christmas</option>
+              <option value="silent">Silent Night</option>
+              <option value="deck">Deck the Halls</option>
+            </select>
+            <button class="btn btn-gold btn-sm" id="musicPlayBtn">▶ Play Carol</button>
+          </div>
+        </div>
+
+        <!-- Room Directory -->
+        <div class="rooms-grid">
+          <button class="room-card" data-jump="lights">
+            <span class="room-icon">✨</span>
+            <h3>Christmas Lights Studio</h3>
+            <p>Light up the Beard Family winter cottage, choose glow patterns, and click bulbs on the roofline.</p>
+            <span class="room-link">Open Light Show →</span>
+          </button>
+          <button class="room-card" data-jump="games">
+            <span class="room-icon">🛷</span>
+            <h3>Holiday Games Arcade</h3>
+            <p>Catch falling gifts in Santa's sleigh, play festive Memory Match, and test your Christmas Trivia!</p>
+            <span class="room-link">Enter Arcade →</span>
+          </button>
+          <button class="room-card" data-jump="santa">
+            <span class="room-icon">🎅</span>
+            <h3>North Pole Post Office</h3>
+            <p>Write a letter to Santa with a Naughty-or-Nice meter, stamp it with a wax seal, and get a reply!</p>
+            <span class="room-link">Send a Letter →</span>
+          </button>
+          <button class="room-card" data-jump="wishlist">
+            <span class="room-icon">🎁</span>
+            <h3>Beard Family Wish List</h3>
+            <p>Add gift ideas by family member, filter easily, and use secret Santa's Helper mode to claim gifts.</p>
+            <span class="room-link">View Wish List →</span>
+          </button>
+          <button class="room-card" data-jump="thankyou">
+            <span class="room-icon">💌</span>
+            <h3>Thank-You Card Studio</h3>
+            <p>Design printable Christmas thank-you cards and pin notes to the Beard Family Gratitude Wall.</p>
+            <span class="room-link">Write a Thank You →</span>
+          </button>
+          <button class="room-card" data-jump="extras">
+            <span class="room-icon">🎄</span>
+            <h3>Advent, Secret Santa &amp; More</h3>
+            <p>Open 24 Advent doors, draw Secret Santa names privately, and print Official Nice-List Certificates.</p>
+            <span class="room-link">Explore Magic →</span>
+          </button>
+        </div>
+
+        <!-- Interactive Beard Family Tree Decorator -->
+        <div class="tree-studio">
+          <div class="tree-stage">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+              <strong style="font-family:var(--font-display); color:#fff7e6; font-size:18px;">🎄 The Beard Family Tree</strong>
+              <span style="font-size:12px; color:#d8cfb9;" id="ornCountBadge">0 ornaments hung</span>
+            </div>
+            <div class="tree-svg-wrap" id="treeWrap">
+              <svg id="familyTreeSvg" viewBox="0 0 360 430" width="100%" aria-label="Interactive Christmas Tree">
+                <defs>
+                  <radialGradient id="starGlow" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#fff4b8" stop-opacity="0.95" />
+                    <stop offset="100%" stop-color="#e5b84b" stop-opacity="0" />
+                  </radialGradient>
+                </defs>
+                <!-- Subtle snowy floor -->
+                <ellipse cx="180" cy="402" rx="145" ry="18" fill="#18382c" opacity="0.8" />
+                <!-- Tree skirt -->
+                <ellipse cx="180" cy="392" rx="76" ry="14" fill="#9e2228" stroke="#e7c677" stroke-width="2" />
+                <!-- Trunk -->
+                <rect x="160" y="348" width="40" height="44" rx="5" fill="#5d3a24" />
+                <!-- Pine tiers -->
+                <polygon points="180,55 110,165 250,165" fill="#1b543c" stroke="#14402d" stroke-width="2" />
+                <polygon points="180,120 82,250 278,250" fill="#184c36" stroke="#123a29" stroke-width="2" />
+                <polygon points="180,190 52,355 308,355" fill="#14432f" stroke="#0f3324" stroke-width="2" />
+                <!-- Garland -->
+                <path d="M128,145 Q180,175 232,145" fill="none" stroke="#e7c677" stroke-width="3" stroke-dasharray="5 5" opacity="0.85" />
+                <path d="M100,228 Q180,266 260,228" fill="none" stroke="#e7c677" stroke-width="3" stroke-dasharray="5 5" opacity="0.85" />
+                <path d="M74,322 Q180,362 286,322" fill="none" stroke="#e7c677" stroke-width="3" stroke-dasharray="5 5" opacity="0.85" />
+                <!-- Presents under tree -->
+                <rect x="85" y="366" width="38" height="28" rx="4" fill="#be2a31" />
+                <rect x="101" y="366" width="6" height="28" fill="#e7c677" />
+                <rect x="85" y="377" width="38" height="5" fill="#e7c677" />
+                <rect x="232" y="362" width="44" height="32" rx="4" fill="#2c6391" />
+                <rect x="251" y="362" width="6" height="32" fill="#fff3d1" />
+                <rect x="232" y="375" width="44" height="5" fill="#fff3d1" />
+                <!-- Tree Fairy Lights Layer -->
+                <g id="treeLightsLayer"></g>
+                <!-- Tree Topper -->
+                <g id="treeTopperGroup" transform="translate(180, 48)">
+                  <circle cx="0" cy="0" r="28" fill="url(#starGlow)" />
+                  <text id="treeTopperIcon" x="0" y="10" text-anchor="middle" font-size="34">⭐</text>
+                </g>
+                <!-- User Ornaments Layer -->
+                <g id="treeOrnamentsLayer"></g>
+              </svg>
+            </div>
+            <p class="tree-hint">Click anywhere on the green branches to hang your ornament! Click an ornament to remove it.</p>
+          </div>
+
+          <div class="card-warm">
+            <h3 style="font-family:var(--font-display); font-size:24px; margin:0 0 6px; color:var(--pine-deep);">Decorate Together</h3>
+            <p style="margin:0 0 14px; color:var(--ink-muted); font-size:14px;">
+              Pick an ornament, add a Beard family member's name tag if you like, and tap the tree to hang it. Your tree saves automatically!
+            </p>
+
+            <div class="field">
+              <label for="ornNameInput">Optional Name Tag on Ornament</label>
+              <input id="ornNameInput" class="input" type="text" maxlength="16" placeholder="e.g., Mom, Dad, Lily, Grandpa..." />
+            </div>
+
+            <label style="font-size:13px; font-weight:700; color:var(--pine-deep); display:block;">Choose Ornament</label>
+            <div class="ornament-palette" id="ornPalette">
+              <button class="orn-pick selected" data-orn="🔴"><span class="emo">🔴</span>Red Bauble</button>
+              <button class="orn-pick" data-orn="🟡"><span class="emo">🟡</span>Gold Globe</button>
+              <button class="orn-pick" data-orn="🍬"><span class="emo">🍬</span>Candy</button>
+              <button class="orn-pick" data-orn="🍪"><span class="emo">🍪</span>Gingerbread</button>
+              <button class="orn-pick" data-orn="❄️"><span class="emo">❄️</span>Snowflake</button>
+              <button class="orn-pick" data-orn="🎅"><span class="emo">🎅</span>Beard Santa</button>
+              <button class="orn-pick" data-orn="🔔"><span class="emo">🔔</span>Jingle Bell</button>
+              <button class="orn-pick" data-orn="🎀"><span class="emo">🎀</span>Ribbon Bow</button>
+            </div>
+
+            <div class="field">
+              <label>Tree Topper</label>
+              <div class="pill-group" id="topperPills">
+                <button class="pill-btn active" data-topper="⭐">⭐ Golden Star</button>
+                <button class="pill-btn" data-topper="👼">👼 Angel</button>
+                <button class="pill-btn" data-topper="🎀">🎀 Velvet Bow</button>
+                <button class="pill-btn" data-topper="❄️">❄️ Ice Crystal</button>
+              </div>
+            </div>
+
+            <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:16px;">
+              <button class="btn btn-pine btn-sm" id="toggleTreeLightsBtn">💡 Tree Lights: ON</button>
+              <button class="btn btn-outline btn-sm" id="undoOrnBtn">↩ Undo Last</button>
+              <button class="btn btn-outline btn-sm" id="clearTreeBtn">🧹 Clear Tree</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== LIGHTS STUDIO ==================== -->
+      <section class="page-section" id="sec-lights">
+        <div class="section-head">
+          <div>
+            <h2>✨ Beard Family Christmas Lights Studio</h2>
+            <p>Design the ultimate holiday light show! Controls update both the Beard Family Winter Cottage below and the interactive light strand draped across the top of the website.</p>
+          </div>
+        </div>
+
+        <div class="cottage-stage">
+          <svg id="cottageSvg" viewBox="0 0 860 360" width="100%" aria-label="Beard Family Winter Cottage Light Show">
+            <defs>
+              <radialGradient id="moonGlow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#fff8d6" stop-opacity="0.95" />
+                <stop offset="45%" stop-color="#ffe89c" stop-opacity="0.3" />
+                <stop offset="100%" stop-color="#ffe89c" stop-opacity="0" />
+              </radialGradient>
+              <linearGradient id="snowHill" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#eef5fa" />
+                <stop offset="100%" stop-color="#c6d9e6" />
+              </linearGradient>
+              <radialGradient id="winWarm" cx="50%" cy="50%" r="60%">
+                <stop offset="0%" stop-color="#ffe89e" />
+                <stop offset="100%" stop-color="#e39d3b" />
+              </radialGradient>
+            </defs>
+
+            <!-- Night stars -->
+            <g fill="#fff8de" opacity="0.75">
+              <circle cx="90" cy="52" r="1.8" />
+              <circle cx="170" cy="30" r="1.4" />
+              <circle cx="290" cy="64" r="2" />
+              <circle cx="420" cy="36" r="1.5" />
+              <circle cx="560" cy="48" r="1.8" />
+              <circle cx="655" cy="28" r="1.3" />
+              <circle cx="790" cy="72" r="2" />
+              <circle cx="730" cy="42" r="1.4" />
+            </g>
+
+            <!-- Moon -->
+            <circle cx="745" cy="82" r="56" fill="url(#moonGlow)" />
+            <circle cx="745" cy="82" r="22" fill="#fff6d1" />
+
+            <!-- Distant snowy pine trees -->
+            <polygon points="110,275 148,175 186,275" fill="#15392d" />
+            <polygon points="62,285 98,200 134,285" fill="#112f25" />
+            <polygon points="695,280 738,165 781,280" fill="#15392d" />
+            <polygon points="758,288 795,205 832,288" fill="#112f25" />
+
+            <!-- Snowy ground -->
+            <path d="M0,295 Q215,260 430,285 T860,280 L860,360 L0,360 Z" fill="url(#snowHill)" />
+
+            <!-- Cozy Chimney & Smoke -->
+            <rect x="528" y="102" width="38" height="64" fill="#6b2b27" stroke="#471b18" stroke-width="2" />
+            <rect x="522" y="96" width="50" height="10" rx="3" fill="#eef5fa" />
+            <g id="chimneySmoke" fill="#ffffff" opacity="0.35">
+              <circle cx="548" cy="78" r="11" />
+              <circle cx="558" cy="58" r="14" />
+              <circle cx="572" cy="36" r="17" />
+            </g>
+
+            <!-- Cottage Body -->
+            <rect x="260" y="178" width="340" height="122" fill="#5e3622" stroke="#3c2114" stroke-width="2" />
+            <!-- Snow-covered Roof -->
+            <polygon points="222,186 430,86 638,186" fill="#2c1911" />
+            <path d="M218,186 L430,82 L642,186 L626,195 L430,102 L234,195 Z" fill="#f2f7fb" />
+
+            <!-- Signboard on Cottage -->
+            <rect x="355" y="142" width="150" height="24" rx="5" fill="#143227" stroke="#e7c677" stroke-width="1.5" />
+            <text x="430" y="158" text-anchor="middle" fill="#fff7df" font-family="Georgia, serif" font-size="11.5" font-weight="bold">THE BEARD HOME</text>
+
+            <!-- Warm Glowing Windows -->
+            <g class="cottage-window">
+              <rect x="292" y="210" width="66" height="54" rx="4" fill="url(#winWarm)" stroke="#3a2013" stroke-width="4" />
+              <line x1="325" y1="210" x2="325" y2="264" stroke="#3a2013" stroke-width="3" />
+              <line x1="292" y1="237" x2="358" y2="237" stroke="#3a2013" stroke-width="3" />
+            </g>
+            <g class="cottage-window">
+              <rect x="502" y="210" width="66" height="54" rx="4" fill="url(#winWarm)" stroke="#3a2013" stroke-width="4" />
+              <line x1="535" y1="210" x2="535" y2="264" stroke="#3a2013" stroke-width="3" />
+              <line x1="502" y1="237" x2="568" y2="237" stroke="#3a2013" stroke-width="3" />
+            </g>
+
+            <!-- Front Door & Wreath -->
+            <rect x="403" y="220" width="54" height="80" rx="4" fill="#8b1d23" stroke="#3a2013" stroke-width="3" />
+            <circle cx="446" cy="264" r="3.5" fill="#e7c677" />
+            <circle cx="430" cy="245" r="11" fill="none" stroke="#1f6342" stroke-width="5" />
+            <circle cx="430" cy="236" r="3" fill="#d93239" />
+
+            <!-- Snowy walkway -->
+            <polygon points="404,300 456,300 492,360 368,360" fill="#dbe8f0" />
+
+            <!-- Snowman on Left Yard -->
+            <g transform="translate(182, 265)">
+              <circle cx="0" cy="26" r="18" fill="#ffffff" />
+              <circle cx="0" cy="4" r="13" fill="#ffffff" />
+              <circle cx="0" cy="-13" r="9.5" fill="#ffffff" />
+              <rect x="-8" y="-27" width="16" height="8" fill="#1e242b" />
+              <rect x="-12" y="-20" width="24" height="3" fill="#1e242b" />
+              <rect x="-9" y="-4" width="18" height="4" rx="2" fill="#be2a31" />
+              <polygon points="1,-13 11,-11 1,-9" fill="#e67e22" />
+              <circle cx="-3" cy="-15" r="1.4" fill="#111" />
+              <circle cx="3" cy="-15" r="1.4" fill="#111" />
+            </g>
+
+            <!-- Interactive Cottage Lights Layer -->
+            <g id="cottageLightsLayer"></g>
+          </svg>
+        </div>
+
+        <div class="light-controls-grid">
+          <div class="card">
+            <strong style="font-family:var(--font-display); font-size:18px; color:var(--pine-deep);">1. Light Pattern</strong>
+            <div class="pill-group" id="lightModePills">
+              <button class="pill-btn active" data-lmode="twinkle">✨ Twinkle</button>
+              <button class="pill-btn" data-lmode="chase">🏃 Chase</button>
+              <button class="pill-btn" data-lmode="wave">🌊 Gentle Wave</button>
+              <button class="pill-btn" data-lmode="steady">💡 Steady Glow</button>
+              <button class="pill-btn" data-lmode="candle">🕯️ Candle Flicker</button>
+              <button class="pill-btn" data-lmode="off">🌙 Lights Off</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <strong style="font-family:var(--font-display); font-size:18px; color:var(--pine-deep);">2. Bulb Color Palette</strong>
+            <div class="pill-group" id="lightPalettePills">
+              <button class="pill-btn active" data-lpal="classic">🎨 Classic Vintage Multi</button>
+              <button class="pill-btn" data-lpal="warm">🕯️ Warm Champagne Gold</button>
+              <button class="pill-btn" data-lpal="candy">🍬 Candy Cane Red &amp; White</button>
+              <button class="pill-btn" data-lpal="frost">❄️ Winter Frost Blue</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <strong style="font-family:var(--font-display); font-size:18px; color:var(--pine-deep);">3. Winter Snowfall</strong>
+            <div class="pill-group" id="snowLevelPills">
+              <button class="pill-btn active" data-snow="gentle">❄️ Gentle Flurries</button>
+              <button class="pill-btn" data-snow="blizzard">🌨️ Cozy Blizzard</button>
+              <button class="pill-btn" data-snow="off">☀️ Clear Night</button>
+            </div>
+            <p style="font-size:12.5px; color:var(--ink-muted); margin:12px 0 0;">
+              Tip: You can click any individual bulb in the top strand or on the cottage roofline to toggle it!
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== GAMES ARCADE ==================== -->
+      <section class="page-section" id="sec-games">
+        <div class="section-head">
+          <div>
+            <h2>🎮 Beard Family Holiday Games Arcade</h2>
+            <p>Three festive games for kids, parents, and grandparents — compete for the Beard Family High Score!</p>
+          </div>
+        </div>
+
+        <div class="subtabs">
+          <button class="subtab active" data-game="catcher">🛷 Catch the Presents</button>
+          <button class="subtab" data-game="memory">🃏 Holiday Memory Match</button>
+          <button class="subtab" data-game="trivia">🎄 Christmas Trivia</button>
+        </div>
+
+        <!-- Game 1: Catch the Presents -->
+        <div class="game-panel active card" id="game-catcher">
+          <div class="catcher-wrap">
+            <div class="catcher-hud">
+              <div>Score: <strong id="cScore">0</strong></div>
+              <div>Lives: <strong id="cLives">❤️❤️❤️</strong></div>
+              <div>Best (Beard Record): <strong id="cBest">0</strong></div>
+              <div style="display:flex; gap:8px;">
+                <button class="btn btn-gold btn-sm" id="cStartBtn">▶ Start Game</button>
+              </div>
+            </div>
+            <canvas id="catcherCanvas" width="680" height="390"></canvas>
+            <p style="margin:0; font-size:13.5px; color:var(--ink-muted); text-align:center;">
+              Move Santa's sleigh with your <strong>mouse, touch, or Arrow / A &amp; D keys</strong>. Catch 🎁 (+10), 🍬 (+15), and ⭐ (+25) — dodge lumps of coal 🪨!
+            </p>
+          </div>
+        </div>
+
+        <!-- Game 2: Holiday Memory Match -->
+        <div class="game-panel card" id="game-memory">
+          <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px;">
+            <div>
+              <strong style="font-family:var(--font-display); font-size:21px; color:var(--pine-deep);">Festive Memory Match</strong>
+              <div style="font-size:13.5px; color:var(--ink-muted); margin-top:2px;">
+                Moves: <strong id="memMoves">0</strong> &nbsp;•&nbsp; Pairs Found: <strong id="memPairs">0</strong>
+              </div>
+            </div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <button class="btn btn-outline btn-sm" id="memEasyBtn">Cozy (6 Pairs)</button>
+              <button class="btn btn-pine btn-sm" id="memHardBtn">Challenge (8 Pairs)</button>
+            </div>
+          </div>
+          <div id="memWinBanner" style="display:none; margin-top:14px; padding:14px; border-radius:12px; background:#e7f6ec; border:1px solid #4d9a6c; color:#154c2b; font-weight:700; text-align:center;"></div>
+          <div class="memory-grid cols-4" id="memoryGrid"></div>
+        </div>
+
+        <!-- Game 3: Christmas Trivia -->
+        <div class="game-panel card" id="game-trivia">
+          <div class="trivia-box">
+            <div style="display:flex; justify-content:space-between; align-items:center; font-size:13.5px; color:var(--ink-muted);">
+              <span id="triviaProgress">Question 1 of 10</span>
+              <span>Score: <strong id="triviaScore" style="color:var(--crimson);">0</strong></span>
+            </div>
+            <h3 class="trivia-q" id="triviaQuestion">Loading question...</h3>
+            <div class="trivia-options" id="triviaOptions"></div>
+            <div id="triviaFeedback" style="margin-top:14px; font-size:14px; min-height:22px; color:var(--pine-deep); font-weight:600;"></div>
+            <div style="margin-top:16px; display:flex; gap:10px;">
+              <button class="btn btn-pine" id="triviaNextBtn" style="display:none;">Next Question →</button>
+              <button class="btn btn-outline" id="triviaRestartBtn" style="display:none;">🔄 Play Trivia Again</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== SANTA LETTERS ==================== -->
+      <section class="page-section" id="sec-santa">
+        <div class="section-head">
+          <div>
+            <h2>🎅 North Pole Post Office — Letters to Santa</h2>
+            <p>Write a letter from the Beard home, seal it with North Pole wax, and receive a magical personalized reply straight from Santa Claus!</p>
+          </div>
+        </div>
+
+        <div class="santa-layout">
+          <div class="airmail-card">
+            <div class="airmail-inner">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:16px;">
+                <div>
+                  <h3 style="font-family:var(--font-display); font-size:24px; margin:0; color:var(--crimson);">Dear Santa Claus,</h3>
+                  <span style="font-size:12.5px; color:var(--ink-muted);">Express Reindeer Airmail • Beard Family Residence</span>
+                </div>
+                <div class="north-pole-stamp">
+                  <span>NORTH POLE</span>
+                  <span>EXPRESS ★</span>
+                  <span>DEC 25</span>
+                </div>
+              </div>
+
+              <form id="santaForm">
+                <div class="form-row">
+                  <div class="field">
+                    <label for="santaWriter">Your Name</label>
+                    <input id="santaWriter" class="input" required placeholder="e.g., Oliver Beard" />
+                  </div>
+                  <div class="field">
+                    <label for="santaAge">Your Age (optional)</label>
+                    <input id="santaAge" class="input" type="text" placeholder="e.g., 7 (or young at heart!)" />
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label for="niceSlider">Nice-List Meter: <span id="niceLabel" style="color:var(--crimson);">Extra Nice! 😇</span></label>
+                  <input id="niceSlider" type="range" min="1" max="5" value="4" style="accent-color:var(--crimson);" />
+                </div>
+
+                <div class="field">
+                  <label for="santaGoodDeed">Something kind I did this year</label>
+                  <input id="santaGoodDeed" class="input" placeholder="e.g., Helped set the dinner table and shared my toys" />
+                </div>
+
+                <div class="field">
+                  <label for="santaWish">My biggest Christmas wish</label>
+                  <input id="santaWish" class="input" required placeholder="e.g., A red sled, a Lego castle, or a snowy Christmas morning" />
+                </div>
+
+                <div class="field">
+                  <label for="santaBody">Your message for Santa &amp; the Reindeer</label>
+                  <textarea id="santaBody" class="textarea" required placeholder="Tell Santa how Rudolph is doing, what cookies we're leaving out, or ask him a question..."></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width:100%;">🛷 Seal &amp; Send to the North Pole</button>
+              </form>
+            </div>
+          </div>
+
+          <div>
+            <div class="santa-reply-paper" id="santaReplyBox">
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:12px;">
+                <div>
+                  <span style="font-size:11px; text-transform:uppercase; letter-spacing:0.16em; color:var(--crimson); font-weight:700;">Official Reply</span>
+                  <h3 style="font-family:var(--font-display); font-size:24px; margin:2px 0 0; color:var(--pine-deep);">From the Desk of Santa Claus</h3>
+                </div>
+                <div class="wax-seal" aria-hidden="true">SC</div>
+              </div>
+              <div id="santaReplyContent" style="font-family:var(--font-display); font-size:16px; line-height:1.65; color:#2b231e;">
+                <p>Ho, ho, ho! Welcome to the North Pole Post Office, Beard Family! Send your letter on the left and Dasher will fly my personal reply right back to this desk.</p>
+                <p style="margin-bottom:0;">With warm sleigh bells and peppermint cheer,<br /><strong>Santa Claus &amp; the Workshop Elves</strong></p>
+              </div>
+              <div style="margin-top:16px; display:flex; gap:8px;" class="no-print">
+                <button class="btn btn-outline btn-sm" id="printSantaReplyBtn">🖨️ Print Santa's Reply</button>
+              </div>
+            </div>
+
+            <div class="card" style="margin-top:20px;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <strong style="font-family:var(--font-display); font-size:19px; color:var(--pine-deep);">📮 Beard Family Sent Mailbox</strong>
+                <span style="font-size:12.5px; color:var(--ink-muted);" id="mailCountLabel">0 letters</span>
+              </div>
+              <div class="mailbox-list" id="mailboxList"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== WISH LIST ==================== -->
+      <section class="page-section" id="sec-wishlist">
+        <div class="section-head">
+          <div>
+            <h2>🎁 Beard Family Christmas Wish List</h2>
+            <p>Keep everyone's Christmas ideas in one cozy spot! Filter by family member, and flip on <strong>Santa's Helper Mode</strong> if you're a gift-giver marking items off.</p>
+          </div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;" class="no-print">
+            <button class="btn btn-outline btn-sm" id="helperModeBtn">🕵️ Santa's Helper Mode: OFF</button>
+            <button class="btn btn-pine btn-sm" id="printWishBtn">🖨️ Print List</button>
+          </div>
+        </div>
+
+        <div class="wish-grid">
+          <div class="card-warm no-print">
+            <h3 style="font-family:var(--font-display); font-size:22px; margin:0 0 14px; color:var(--pine-deep);">Add a Christmas Wish</h3>
+            <form id="wishForm">
+              <div class="field">
+                <label for="wishPerson">Family Member</label>
+                <input id="wishPerson" class="input" required placeholder="e.g., Mom, Dad, Sam, Grandma Beard" />
+              </div>
+              <div class="field">
+                <label for="wishItem">Gift Idea</label>
+                <input id="wishItem" class="input" required placeholder="e.g., Cozy fleece blanket, Board game, Telescope" />
+              </div>
+              <div class="form-row">
+                <div class="field">
+                  <label for="wishCategory">Category</label>
+                  <select id="wishCategory" class="select">
+                    <option value="Toys &amp; Games">🧸 Toys &amp; Games</option>
+                    <option value="Cozy &amp; Wear">🧣 Cozy &amp; Wear</option>
+                    <option value="Books &amp; Crafts">📚 Books &amp; Crafts</option>
+                    <option value="Home &amp; Kitchen">☕ Home &amp; Kitchen</option>
+                    <option value="Experience">🎟️ Family Experience</option>
+                    <option value="Stocking Stuffer">🧦 Stocking Stuffer</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="wishPriority">How Much Wanted?</label>
+                  <select id="wishPriority" class="select">
+                    <option value="Dream Gift">⭐ Dream Gift</option>
+                    <option value="Would Love">❤️ Would Love</option>
+                    <option value="Fun Idea">✨ Fun Idea</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field">
+                <label for="wishNote">Size, Color, or Helpful Note (optional)</label>
+                <input id="wishNote" class="input" placeholder="e.g., Size Medium, dark green, or 'surprise me!'" />
+              </div>
+              <button type="submit" class="btn btn-primary" style="width:100%;">➕ Add to Beard Wish List</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <div class="wish-toolbar">
+              <div class="pill-group" id="wishFilterPills" style="margin-top:0;"></div>
+              <span style="font-size:12.5px; color:var(--ink-muted);" id="wishCountLabel"></span>
+            </div>
+            <div id="helperBanner" style="display:none; margin-bottom:14px; padding:10px 14px; border-radius:10px; background:#edf6f0; border:1px solid #96c4a6; font-size:13px; color:#184a2c;">
+              🕵️ <strong>Santa's Helper Mode is ON:</strong> You can quietly mark gifts as "Claimed / Under the Tree" so nobody buys duplicates. Turn it off before kids look!
+            </div>
+            <div id="wishListContainer" style="display:grid; gap:12px;"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== THANK YOU PAGE ==================== -->
+      <section class="page-section" id="sec-thankyou">
+        <div class="section-head">
+          <div>
+            <h2>💌 Beard Family Thank-You Card Studio &amp; Gratitude Wall</h2>
+            <p>Celebrate the spirit of giving! Design warm, printable Christmas thank-you cards for friends and relatives, and share holiday gratitude on the family board.</p>
+          </div>
+        </div>
+
+        <div class="thanks-layout">
+          <div class="card-warm no-print">
+            <h3 style="font-family:var(--font-display); font-size:22px; margin:0 0 12px; color:var(--pine-deep);">Create a Thank-You Card</h3>
+
+            <div class="field">
+              <label>Card Style</label>
+              <div class="pill-group" id="tyThemePills" style="margin-top:2px;">
+                <button class="pill-btn active" data-tytheme="holly">🌿 Holly &amp; Gold</button>
+                <button class="pill-btn" data-tytheme="pine">🌲 Snowy Pine</button>
+                <button class="pill-btn" data-tytheme="northpole">📮 North Pole Post</button>
+                <button class="pill-btn" data-tytheme="cocoa">☕ Warm Cocoa</button>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="field">
+                <label for="tyTo">Dear (Who gave the gift?)</label>
+                <input id="tyTo" class="input" value="Aunt Sarah &amp; Uncle Tom" />
+              </div>
+              <div class="field">
+                <label for="tyFrom">With Love From</label>
+                <input id="tyFrom" class="input" value="The Beard Family" />
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="tyGift">Thank you so much for...</label>
+              <input id="tyGift" class="input" value="the cozy plaid blankets and homemade peppermint bark" />
+            </div>
+
+            <div class="field">
+              <label for="tyMessage">Personal Note</label>
+              <textarea id="tyMessage" class="textarea">We wrapped up in them right away by the tree! Thinking of you this Christmas and can't wait to see you again soon.</textarea>
+              <div class="pill-group" style="margin-top:6px;">
+                <button type="button" class="pill-btn ty-starter" data-msg="I opened it right away and couldn't stop smiling! Thank you for thinking of me.">😊 Kid Starter</button>
+                <button type="button" class="pill-btn ty-starter" data-msg="It fits right into our holiday traditions and made Christmas morning extra special!">🎄 Warm &amp; Classic</button>
+                <button type="button" class="pill-btn ty-starter" data-msg="You always know how to make Christmas magical. Sending big Beard family hugs!">🤗 Big Hugs</button>
+              </div>
+            </div>
+
+            <div style="display:flex; flex-wrap:wrap; gap:8px;">
+              <button class="btn btn-primary" id="saveThanksBtn">📌 Pin to Gratitude Wall</button>
+              <button class="btn btn-pine" id="copyThanksBtn">📋 Copy Note</button>
+              <button class="btn btn-outline" id="printThanksBtn">🖨️ Print Card</button>
+            </div>
+          </div>
+
+          <div>
+            <div class="ty-preview theme-holly" id="tyPreviewCard">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-size:12px; letter-spacing:0.16em; text-transform:uppercase; font-weight:700; opacity:0.8;">Christmas Thank You</span>
+                <span style="font-size:24px;" id="tyIcon">🌿</span>
+              </div>
+              <div style="margin:18px 0;">
+                <h3 style="font-family:var(--font-display); font-size:26px; margin:0 0 10px;" id="tyPreviewTo">Dear Aunt Sarah &amp; Uncle Tom,</h3>
+                <p style="font-family:var(--font-display); font-size:17px; line-height:1.6; margin:0 0 12px;" id="tyPreviewGift">
+                  Thank you so very much for the cozy plaid blankets and homemade peppermint bark!
+                </p>
+                <p style="font-size:15px; line-height:1.6; margin:0; opacity:0.92;" id="tyPreviewMsg">
+                  We wrapped up in them right away by the tree! Thinking of you this Christmas and can't wait to see you again soon.
+                </p>
+              </div>
+              <div style="border-top:1px solid currentColor; opacity:0.85; padding-top:12px; display:flex; justify-content:space-between; align-items:center; font-family:var(--font-display);">
+                <span id="tyPreviewFrom">With love &amp; cheer, The Beard Family</span>
+                <span style="font-size:12px;">★ Merry Christmas ★</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Family Gratitude Wall -->
+        <div class="card" style="margin-top:28px;">
+          <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px;">
+            <div>
+              <h3 style="font-family:var(--font-display); font-size:23px; margin:0; color:var(--pine-deep);">✨ The Beard Family Gratitude Wall</h3>
+              <p style="margin:4px 0 0; font-size:13.5px; color:var(--ink-muted);">All our pinned thank-you notes and favorite holiday appreciations in one place.</p>
+            </div>
+          </div>
+          <div class="gratitude-grid" id="gratitudeWall"></div>
+        </div>
+      </section>
+
+      <!-- ==================== FAMILY MAGIC (EXTRAS) ==================== -->
+      <section class="page-section" id="sec-extras">
+        <div class="section-head">
+          <div>
+            <h2>🌟 Beard Family Christmas Magic</h2>
+            <p>More festive fun we built for the Beards: a 24-day family Advent Calendar, a no-peeking Secret Santa drawer, and Official Nice-List Certificates!</p>
+          </div>
+        </div>
+
+        <div class="subtabs">
+          <button class="subtab active" data-extra="advent">📅 24-Day Advent Calendar</button>
+          <button class="subtab" data-extra="secretsanta">🎁 Secret Santa Spinner</button>
+          <button class="subtab" data-extra="certificate">📜 Official Nice-List Certificate</button>
+        </div>
+
+        <!-- Extra 1: Advent Calendar -->
+        <div class="game-panel active card" id="extra-advent">
+          <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px;">
+            <div>
+              <h3 style="font-family:var(--font-display); font-size:23px; margin:0; color:var(--pine-deep);">Beard Family 24-Day Advent Calendar</h3>
+              <p style="margin:4px 0 0; font-size:13.5px; color:var(--ink-muted);">Click a numbered door to reveal a daily Beard family holiday activity, joke, or cozy tradition!</p>
+            </div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <button class="btn btn-outline btn-sm" id="adventModeBtn">🔓 Preview All Doors: ON</button>
+              <button class="btn btn-outline btn-sm" id="adventResetBtn">↺ Close All Doors</button>
+            </div>
+          </div>
+          <div id="adventRevealBanner" style="display:none; margin-top:16px; padding:16px 20px; border-radius:14px; background:var(--gold-soft); border:1px solid var(--gold); color:var(--ink);"></div>
+          <div class="advent-grid" id="adventGrid"></div>
+        </div>
+
+        <!-- Extra 2: Secret Santa -->
+        <div class="game-panel card" id="extra-secretsanta">
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:24px;">
+            <div>
+              <h3 style="font-family:var(--font-display); font-size:23px; margin:0 0 8px; color:var(--pine-deep);">Beard Family Secret Santa</h3>
+              <p style="font-size:14px; color:var(--ink-muted); margin:0 0 14px;">
+                Enter everyone participating (one name per line). We'll shuffle secretly so nobody draws themselves, and each person can tap their own name to peek privately!
+              </p>
+              <div class="field">
+                <label for="ssNamesInput">Family Members (at least 3)</label>
+                <textarea id="ssNamesInput" class="textarea" style="min-height:140px;">Mom Beard
+Dad Beard
+Grandma Beard
+Grandpa Beard
+Aunt Clara
+Uncle Ben</textarea>
+              </div>
+              <button class="btn btn-primary" id="ssDrawBtn">🎲 Draw Secret Santa Names</button>
+            </div>
+
+            <div>
+              <h4 style="font-family:var(--font-display); font-size:19px; margin:0 0 10px; color:var(--pine-deep);">Private Reveal Cards</h4>
+              <p style="font-size:13.5px; color:var(--ink-muted); margin:0 0 14px;">
+                Pass the screen around! Click your name to peek at your match, then click again to hide before handing it to the next Beard.
+              </p>
+              <div id="ssResults" style="display:grid; gap:10px;">
+                <div style="padding:18px; border-radius:12px; background:var(--cream); border:1px dashed var(--border); color:var(--ink-muted); font-size:14px;">
+                  Click <strong>Draw Secret Santa Names</strong> to create private reveal cards!
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Extra 3: Official Nice-List Certificate -->
+        <div class="game-panel card" id="extra-certificate">
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap:24px; align-items:start;">
+            <div class="no-print">
+              <h3 style="font-family:var(--font-display); font-size:23px; margin:0 0 8px; color:var(--pine-deep);">Official Nice-List Certificate</h3>
+              <p style="font-size:14px; color:var(--ink-muted); margin:0 0 16px;">
+                Award any Beard family member (or family pet!) an official certificate signed by Santa Claus.
+              </p>
+              <div class="field">
+                <label for="certNameInput">Recipient's Name</label>
+                <input id="certNameInput" class="input" value="The Beard Family" />
+              </div>
+              <div class="field">
+                <label for="certReasonInput">Official Commendation</label>
+                <input id="certReasonInput" class="input" value="Spreading laughter, kindness, and extra Christmas cheer all year long" />
+              </div>
+              <div class="field">
+                <label for="certRankInput">Honorary North Pole Title</label>
+                <select id="certRankInput" class="select">
+                  <option value="Gold-Star Nice List Member">⭐ Gold-Star Nice List Member</option>
+                  <option value="Chief Hot Cocoa Taster">☕ Chief Hot Cocoa Taster</option>
+                  <option value="Honorary Head Elf">🧝 Honorary Head Elf</option>
+                  <option value="Master Cookie Decorator">🍪 Master Cookie Decorator</option>
+                  <option value="Official Reindeer Wrangler">🦌 Official Reindeer Wrangler</option>
+                </select>
+              </div>
+              <button class="btn btn-gold" id="printCertBtn">🖨️ Print Official Certificate</button>
+            </div>
+
+            <div class="cert-frame" id="certFrame">
+              <div style="font-size:11.5px; letter-spacing:0.2em; text-transform:uppercase; color:var(--pine); font-weight:700;">
+                ★ North Pole Department of Christmas Cheer ★
+              </div>
+              <h3>Official Nice List Certificate</h3>
+              <p style="margin:6px 0; font-size:14.5px; color:var(--ink-muted);">This certifies that</p>
+              <div class="cert-name" id="certOutName">The Beard Family</div>
+              <p style="margin:4px 0 12px; font-size:15px; color:var(--ink);">
+                has been checked twice and officially inducted as a<br />
+                <strong style="color:var(--crimson);" id="certOutRank">Gold-Star Nice List Member</strong>
+              </p>
+              <p style="font-style:italic; font-size:14.5px; color:var(--ink-muted); max-width:44ch; margin:0 auto 20px;" id="certOutReason">
+                "Spreading laughter, kindness, and extra Christmas cheer all year long"
+              </p>
+              <div style="display:flex; justify-content:space-around; align-items:center; flex-wrap:wrap; gap:12px; margin-top:14px;">
+                <div>
+                  <div style="font-family:var(--font-display); font-style:italic; font-size:20px; color:var(--crimson);">Santa Claus</div>
+                  <div style="font-size:11px; text-transform:uppercase; letter-spacing:0.1em; color:var(--ink-muted); border-top:1px solid var(--gold); padding-top:4px;">Signed at the North Pole</div>
+                </div>
+                <div class="wax-seal" aria-hidden="true">★</div>
+                <div>
+                  <div style="font-family:var(--font-display); font-style:italic; font-size:18px; color:var(--pine-deep);" id="certYearText">December 2026</div>
+                  <div style="font-size:11px; text-transform:uppercase; letter-spacing:0.1em; color:var(--ink-muted); border-top:1px solid var(--gold); padding-top:4px;">Official Registry</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <strong>The Beard Family Christmas</strong><br />
+      Made with warmth, twinkling lights, and holiday cheer for every Beard near and far. 🎄
+    </footer>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </div>
+
+  <script>
+    (function () {
+      "use strict";
+
+      /* ==================== STORAGE & STATE ==================== */
+      const STORE_KEY = "beard_family_christmas_v1";
+      const defaultState = {
+        ornaments: [
+          { x: 180, y: 120, emo: "🔴", name: "Beards" },
+          { x: 145, y: 195, emo: "🟡", name: "" },
+          { x: 215, y: 215, emo: "🎅", name: "Santa" },
+          { x: 120, y: 285, emo: "🍪", name: "" },
+          { x: 240, y: 295, emo: "❄️", name: "" }
+        ],
+        topper: "⭐",
+        treeLightsOn: true,
+        lightMode: "twinkle",
+        lightPalette: "classic",
+        snowLevel: "gentle",
+        sfxOn: true,
+        catcherBest: 0,
+        letters: [],
+        wishes: [
+          { id: "w1", person: "Mom Beard", item: "Cozy wool reading blanket", category: "Cozy & Wear", priority: "Would Love", note: "Forest green or cream", claimed: false },
+          { id: "w2", person: "Dad Beard", item: "Cast-iron skillet for pancakes", category: "Home & Kitchen", priority: "Dream Gift", note: "12-inch for Christmas morning!", claimed: false },
+          { id: "w3", person: "Kids", item: "Family board game night bundle", category: "Toys & Games", priority: "Dream Gift", note: "Something everyone can play together", claimed: false }
+        ],
+        gratitude: [
+          { id: "g1", to: "Grandma & Grandpa Beard", from: "All of Us", text: "Thank you for always making the house smell like cinnamon rolls on Christmas morning!", date: "Holiday Tradition" },
+          { id: "g2", to: "The Whole Beard Crew", from: "Mom & Dad", text: "So thankful for another year of laughter, game nights, and twinkling lights together.", date: "With Love" }
+        ],
+        adventOpened: []
+      };
+
+      function loadState() {
+        try {
+          const raw = localStorage.getItem(STORE_KEY);
+          if (!raw) return structuredClone(defaultState);
+          const parsed = JSON.parse(raw);
+          return Object.assign(structuredClone(defaultState), parsed);
+        } catch (e) {
+          return structuredClone(defaultState);
+        }
+      }
+
+      let state = loadState();
+      function saveState() {
+        try {
+          localStorage.setItem(STORE_KEY, JSON.stringify(state));
+        } catch (e) { /* ignore quota errors */ }
+      }
+
+      /* ==================== TOAST HELPER ==================== */
+      let toastTimer = null;
+      function showToast(msg) {
+        const el = document.getElementById("toast");
+        el.textContent = msg;
+        el.classList.add("show");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => el.classList.remove("show"), 2600);
+      }
+
+      /* ==================== WEB AUDIO CHIMES & MUSIC BOX ==================== */
+      let audioCtx = null;
+      function ensureAudio() {
+        if (!audioCtx) {
+          const Ctx = window.AudioContext || window.webkitAudioContext;
+          if (Ctx) audioCtx = new Ctx();
+        }
+        if (audioCtx && audioCtx.state === "suspended") {
+          audioCtx.resume();
+        }
+        return audioCtx;
+      }
+
+      function playChime(freq = 880, dur = 0.28, vol = 0.08) {
+        if (!state.sfxOn) return;
+        const ctx = ensureAudio();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(freq, now);
+        gain.gain.setValueAtTime(0.001, now);
+        gain.gain.exponentialRampToValueAtTime(vol, now + 0.015);
+        gain.gain.exponentialRampToValueAtTime(0.0008, now + dur);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + dur + 0.02);
+      }
+
+      function playChord(freqs) {
+        freqs.forEach((f, idx) => setTimeout(() => playChime(f, 0.35, 0.06), idx * 70));
+      }
+
+      // Built-in holiday melodies [MIDI note, beats]
+      const SONGS = {
+        jingle: {
+          tempo: 175,
+          notes: [
+            [64,1],[64,1],[64,2], [64,1],[64,1],[64,2], [64,1],[67,1],[60,1.5],[62,0.5],[64,4],
+            [65,1],[65,1],[65,1.5],[65,0.5], [65,1],[64,1],[64,1],[64,0.5],[64,0.5],
+            [64,1],[62,1],[62,1],[64,1],[62,2],[67,2]
+          ]
+        },
+        wish: {
+          tempo: 165,
+          notes: [
+            [62,1],[67,1],[67,0.5],[69,0.5],[67,0.5],[66,0.5],[64,1],[64,1],[64,1],
+            [69,1],[69,0.5],[71,0.5],[69,0.5],[67,0.5],[66,1],[62,1],[62,1],
+            [71,1],[71,0.5],[72,0.5],[71,0.5],[69,0.5],[67,1],[64,1],[62,0.5],[62,0.5],
+            [64,1],[69,1],[66,1],[67,2]
+          ]
+        },
+        silent: {
+          tempo: 105,
+          notes: [
+            [67,1.5],[69,0.5],[67,1],[64,3], [67,1.5],[69,0.5],[67,1],[64,3],
+            [74,2],[74,1],[71,3], [72,2],[72,1],[67,3],
+            [69,2],[69,1],[72,1.5],[71,0.5],[69,1],[67,1.5],[69,0.5],[67,1],[64,3]
+          ]
+        },
+        deck: {
+          tempo: 170,
+          notes: [
+            [67,1.5],[65,0.5],[64,1],[62,1],[60,1],[62,1],[64,1],[60,1],
+            [62,0.5],[64,0.5],[65,0.5],[62,0.5],[64,1.5],[62,0.5],[60,1],[59,1],[60,2]
+          ]
+        }
+      };
+
+      let musicPlaying = false;
+      let musicTimer = null;
+      let musicStep = 0;
+
+      function midiToFreq(m) {
+        return 440 * Math.pow(2, (m - 69) / 12);
+      }
+
+      function playMusicNote(freq, durSec) {
+        const ctx = ensureAudio();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+        const osc1 = ctx.createOscillator();
+        const osc2 = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc1.type = "sine";
+        osc2.type = "triangle";
+        osc1.frequency.setValueAtTime(freq, now);
+        osc2.frequency.setValueAtTime(freq * 2, now);
+        gain.gain.setValueAtTime(0.0005, now);
+        gain.gain.exponentialRampToValueAtTime(0.065, now + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0008, now + durSec * 1.15);
+        osc1.connect(gain);
+        osc2.connect(gain);
+        gain.connect(ctx.destination);
+        osc1.start(now);
+        osc2.start(now);
+        osc1.stop(now + durSec * 1.2);
+        osc2.stop(now + durSec * 1.2);
+      }
+
+      function scheduleNextNote() {
+        if (!musicPlaying) return;
+        const songKey = document.getElementById("songSelect").value;
+        const song = SONGS[songKey] || SONGS.jingle;
+        const [midi, beats] = song.notes[musicStep % song.notes.length];
+        const beatSec = 60 / song.tempo;
+        const durSec = beats * beatSec;
+        playMusicNote(midiToFreq(midi), durSec);
+        musicStep = (musicStep + 1) % song.notes.length;
+        musicTimer = setTimeout(scheduleNextNote, durSec * 1000);
+      }
+
+      function toggleMusic(forceState) {
+        musicPlaying = typeof forceState === "boolean" ? forceState : !musicPlaying;
+        clearTimeout(musicTimer);
+        const playBtn = document.getElementById("musicPlayBtn");
+        const quickBtn = document.getElementById("quickMusicBtn");
+        if (musicPlaying) {
+          ensureAudio();
+          musicStep = 0;
+          scheduleNextNote();
+          playBtn.textContent = "⏸ Pause Carol";
+          quickBtn.classList.add("is-on");
+          quickBtn.textContent = "🎵 Playing";
+        } else {
+          playBtn.textContent = "▶ Play Carol";
+          quickBtn.classList.remove("is-on");
+          quickBtn.textContent = "🎵 Music";
+        }
+      }
+
+      document.getElementById("musicPlayBtn").addEventListener("click", () => toggleMusic());
+      document.getElementById("quickMusicBtn").addEventListener("click", () => toggleMusic());
+      document.getElementById("songSelect").addEventListener("change", () => {
+        if (musicPlaying) {
+          clearTimeout(musicTimer);
+          musicStep = 0;
+          scheduleNextNote();
+        }
+      });
+
+      /* ==================== NAVIGATION ==================== */
+      function showSection(name) {
+        document.querySelectorAll(".page-section").forEach((s) => {
+          s.classList.toggle("active", s.id === "sec-" + name);
+        });
+        document.querySelectorAll(".nav-btn").forEach((b) => {
+          b.classList.toggle("active", b.dataset.section === name);
+        });
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      document.querySelectorAll(".nav-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          playChime(784, 0.14, 0.04);
+          showSection(btn.dataset.section);
+        });
+      });
+
+      document.querySelectorAll("[data-jump]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          playChime(880, 0.16, 0.04);
+          showSection(btn.dataset.jump);
+        });
+      });
+
+      document.getElementById("brandHomeLink").addEventListener("click", (e) => {
+        e.preventDefault();
+        showSection("home");
+      });
+
+      /* ==================== SFX & SNOW QUICK CONTROLS ==================== */
+      const sfxBtn = document.getElementById("sfxToggleBtn");
+      function syncQuickButtons() {
+        sfxBtn.classList.toggle("is-on", state.sfxOn);
+        sfxBtn.textContent = state.sfxOn ? "🔔 Chimes" : "🔕 Muted";
+        const snowBtn = document.getElementById("snowToggleBtn");
+        snowBtn.classList.toggle("is-on", state.snowLevel !== "off");
+        snowBtn.textContent = state.snowLevel === "off" ? "☀️ No Snow" : (state.snowLevel === "blizzard" ? "🌨️ Blizzard" : "❄️ Snow");
+      }
+
+      sfxBtn.addEventListener("click", () => {
+        state.sfxOn = !state.sfxOn;
+        saveState();
+        syncQuickButtons();
+        if (state.sfxOn) playChime(1046.5, 0.25, 0.06);
+      });
+
+      document.getElementById("snowToggleBtn").addEventListener("click", () => {
+        state.snowLevel = state.snowLevel === "off" ? "gentle" : (state.snowLevel === "gentle" ? "blizzard" : "off");
+        saveState();
+        syncQuickButtons();
+        syncLightStudioPills();
+        initSnow();
+      });
+
+      /* ==================== LIVE CHRISTMAS COUNTDOWN ==================== */
+      function updateCountdown() {
+        const now = new Date();
+        let year = now.getFullYear();
+        const isXmas = now.getMonth() === 11 && now.getDate() === 25;
+        if (now.getMonth() === 11 && now.getDate() > 25) {
+          year += 1;
+        }
+        const target = new Date(year, 11, 25, 0, 0, 0);
+        const diff = target - now;
+
+        const heading = document.getElementById("cdHeading");
+        const subnote = document.getElementById("cdSubnote");
+        const certYear = document.getElementById("certYearText");
+        if (certYear) certYear.textContent = "December " + year;
+
+        if (isXmas) {
+          heading.textContent = "🎄 It's Christmas Day! 🎄";
+          ["cdDays", "cdHours", "cdMins", "cdSecs"].forEach((id) => (document.getElementById(id).textContent = "00"));
+          subnote.textContent = "Merry Christmas, Beard Family! Time to open presents!";
+          return;
+        }
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const mins = Math.floor((diff / (1000 * 60)) % 60);
+        const secs = Math.floor((diff / 1000) % 60);
+
+        document.getElementById("cdDays").textContent = String(days).padStart(2, "0");
+        document.getElementById("cdHours").textContent = String(hours).padStart(2, "0");
+        document.getElementById("cdMins").textContent = String(mins).padStart(2, "0");
+        document.getElementById("cdSecs").textContent = String(secs).padStart(2, "0");
+        heading.textContent = "Countdown to Christmas " + year;
+      }
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+
+      /* ==================== INTERACTIVE CHRISTMAS LIGHTS ==================== */
+      const PALETTES = {
+        classic: ["#ff4b4b", "#ffd15c", "#3be083", "#52b2ff", "#ff8b3d"],
+        warm: ["#ffe6a7", "#ffd275", "#fff2cc", "#f6bd60", "#ffe19c"],
+        candy: ["#ff3b47", "#ffffff", "#e62432", "#fff5f5"],
+        frost: ["#80d8ff", "#e1f5fe", "#40c4ff", "#ffffff", "#b3e5fc"]
+      };
+
+      const BULB_COUNT = 22;
+      const bulbManualOff = new Set();
+      const topBulbsRow = document.getElementById("topBulbsRow");
+      const topBulbEls = [];
+
+      for (let i = 0; i < BULB_COUNT; i++) {
+        const btn = document.createElement("button");
+        btn.className = "bulb-btn";
+        btn.type = "button";
+        btn.setAttribute("aria-label", "Toggle Christmas light bulb " + (i + 1));
+        const drop = Math.round(Math.sin((i / (BULB_COUNT - 1)) * Math.PI * 3) * 5 + 6);
+        btn.style.marginTop = drop + "px";
+        btn.innerHTML = '<span class="bulb-socket"></span><span class="bulb-glass"></span>';
+        btn.addEventListener("click", () => {
+          if (bulbManualOff.has(i)) {
+            bulbManualOff.delete(i);
+            playChime(660 + (i % 7) * 70, 0.2, 0.05);
+          } else {
+            bulbManualOff.add(i);
+            playChime(390, 0.14, 0.03);
+          }
+          renderLightsTick();
+        });
+        topBulbsRow.appendChild(btn);
+        topBulbEls.push(btn);
+      }
+
+      // Cottage roofline & bush interactive bulbs
+      const cottageLightsLayer = document.getElementById("cottageLightsLayer");
+      const cottagePoints = [];
+      // Left roof slope
+      for (let i = 0; i <= 8; i++) {
+        const t = i / 8;
+        cottagePoints.push({ x: 228 + t * (430 - 228), y: 187 - t * (187 - 92) });
+      }
+      // Right roof slope
+      for (let i = 1; i <= 8; i++) {
+        const t = i / 8;
+        cottagePoints.push({ x: 430 + t * (632 - 430), y: 92 + t * (187 - 92) });
+      }
+      // Horizontal eave
+      for (let i = 0; i <= 10; i++) {
+        const t = i / 10;
+        cottagePoints.push({ x: 262 + t * 336, y: 185 });
+      }
+
+      const cottageManualOff = new Set();
+      const cottageCircles = [];
+      cottagePoints.forEach((pt, idx) => {
+        const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        g.style.cursor = "pointer";
+        const halo = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        halo.setAttribute("cx", pt.x);
+        halo.setAttribute("cy", pt.y);
+        halo.setAttribute("r", "11");
+        halo.setAttribute("opacity", "0.35");
+
+        const bulb = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        bulb.setAttribute("cx", pt.x);
+        bulb.setAttribute("cy", pt.y);
+        bulb.setAttribute("r", "4.8");
+
+        g.appendChild(halo);
+        g.appendChild(bulb);
+        g.addEventListener("click", () => {
+          if (cottageManualOff.has(idx)) {
+            cottageManualOff.delete(idx);
+            playChime(740 + (idx % 6) * 55, 0.2, 0.05);
+          } else {
+            cottageManualOff.add(idx);
+            playChime(350, 0.12, 0.03);
+          }
+          renderLightsTick();
+        });
+        cottageLightsLayer.appendChild(g);
+        cottageCircles.push({ halo, bulb });
+      });
+
+      let lightTick = 0;
+      function computeBulbBrightness(idx, mode, tick) {
+        if (mode === "off") return 0;
+        if (mode === "steady") return 1;
+        if (mode === "chase") return (idx + tick) % 3 === 0 ? 1 : 0.22;
+        if (mode === "wave") return 0.35 + 0.65 * (0.5 + 0.5 * Math.sin(tick * 0.65 + idx * 0.55));
+        if (mode === "candle") return 0.62 + 0.38 * Math.abs(Math.sin(tick * 0.9 + idx * 1.7));
+        // twinkle
+        return ((idx * 7 + tick) % 5 === 0) ? 0.3 : 1;
+      }
+
+      function renderLightsTick() {
+        const pal = PALETTES[state.lightPalette] || PALETTES.classic;
+        const mode = state.lightMode;
+
+        topBulbEls.forEach((btn, i) => {
+          const glass = btn.querySelector(".bulb-glass");
+          const color = pal[i % pal.length];
+          const off = mode === "off" || bulbManualOff.has(i);
+          btn.classList.toggle("is-off", off);
+          glass.style.background = color;
+          if (!off) {
+            const b = computeBulbBrightness(i, mode, lightTick);
+            glass.style.opacity = String(0.32 + b * 0.68);
+            glass.style.boxShadow = `0 0 ${Math.round(8 + b * 12)}px ${color}`;
+          }
+        });
+
+        cottageCircles.forEach((c, i) => {
+          const color = pal[i % pal.length];
+          const off = mode === "off" || cottageManualOff.has(i);
+          c.bulb.setAttribute("fill", off ? "#3b474f" : color);
+          c.halo.setAttribute("fill", color);
+          if (off) {
+            c.halo.setAttribute("opacity", "0");
+            c.bulb.setAttribute("opacity", "0.35");
+          } else {
+            const b = computeBulbBrightness(i, mode, lightTick);
+            c.halo.setAttribute("opacity", String((0.15 + b * 0.38).toFixed(2)));
+            c.bulb.setAttribute("opacity", String((0.45 + b * 0.55).toFixed(2)));
+          }
+        });
+
+        // Also gently twinkle tree lights
+        renderTreeLights(pal);
+      }
+
+      setInterval(() => {
+        lightTick++;
+        renderLightsTick();
+      }, 420);
+
+      function syncLightStudioPills() {
+        document.querySelectorAll("#lightModePills .pill-btn").forEach((b) =>
+          b.classList.toggle("active", b.dataset.lmode === state.lightMode)
+        );
+        document.querySelectorAll("#lightPalettePills .pill-btn").forEach((b) =>
+          b.classList.toggle("active", b.dataset.lpal === state.lightPalette)
+        );
+        document.querySelectorAll("#snowLevelPills .pill-btn").forEach((b) =>
+          b.classList.toggle("active", b.dataset.snow === state.snowLevel)
+        );
+      }
+
+      document.querySelectorAll("#lightModePills .pill-btn").forEach((b) => {
+        b.addEventListener("click", () => {
+          state.lightMode = b.dataset.lmode;
+          bulbManualOff.clear();
+          cottageManualOff.clear();
+          saveState();
+          syncLightStudioPills();
+          renderLightsTick();
+          playChime(880, 0.2, 0.04);
+        });
+      });
+
+      document.querySelectorAll("#lightPalettePills .pill-btn").forEach((b) => {
+        b.addEventListener("click", () => {
+          state.lightPalette = b.dataset.lpal;
+          saveState();
+          syncLightStudioPills();
+          renderLightsTick();
+          playChime(987, 0.2, 0.04);
+        });
+      });
+
+      document.querySelectorAll("#snowLevelPills .pill-btn").forEach((b) => {
+        b.addEventListener("click", () => {
+          state.snowLevel = b.dataset.snow;
+          saveState();
+          syncLightStudioPills();
+          syncQuickButtons();
+          initSnow();
+        });
+      });
+
+      /* ==================== SNOWFALL CANVAS ==================== */
+      const snowCanvas = document.getElementById("snowCanvas");
+      const snowCtx = snowCanvas.getContext("2d");
+      let flakes = [];
+
+      function resizeSnow() {
+        snowCanvas.width = window.innerWidth;
+        snowCanvas.height = window.innerHeight;
+      }
+      window.addEventListener("resize", resizeSnow);
+      resizeSnow();
+
+      function initSnow() {
+        const count = state.snowLevel === "off" ? 0 : (state.snowLevel === "blizzard" ? 130 : 48);
+        flakes = Array.from({ length: count }, () => ({
+          x: Math.random() * snowCanvas.width,
+          y: Math.random() * snowCanvas.height,
+          r: Math.random() * 2.6 + 1.1,
+          vy: (Math.random() * 0.9 + 0.45) * (state.snowLevel === "blizzard" ? 1.85 : 1),
+          vx: Math.random() * 0.6 - 0.3,
+          a: Math.random() * 0.55 + 0.35
+        }));
+      }
+
+      function animateSnow() {
+        snowCtx.clearRect(0, 0, snowCanvas.width, snowCanvas.height);
+        for (const f of flakes) {
+          f.y += f.vy;
+          f.x += f.vx + Math.sin(f.y * 0.015) * 0.35;
+          if (f.y > snowCanvas.height + 6) {
+            f.y = -6;
+            f.x = Math.random() * snowCanvas.width;
+          }
+          if (f.x > snowCanvas.width + 6) f.x = -6;
+          if (f.x < -6) f.x = snowCanvas.width + 6;
+          snowCtx.beginPath();
+          snowCtx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+          snowCtx.fillStyle = `rgba(255, 255, 255, ${f.a})`;
+          snowCtx.fill();
+        }
+        requestAnimationFrame(animateSnow);
+      }
+      initSnow();
+      animateSnow();
+
+      /* ==================== INTERACTIVE BEARD FAMILY TREE ==================== */
+      let selectedOrn = "🔴";
+      const treeLightCoords = [
+        [160,110],[200,115],[138,150],[182,155],[222,148],
+        [116,200],[158,212],[204,208],[242,202],
+        [98,255],[146,268],[194,262],[248,258],
+        [82,315],[132,326],[182,318],[232,328],[274,315]
+      ];
+
+      function renderTreeLights(pal) {
+        const layer = document.getElementById("treeLightsLayer");
+        if (!layer) return;
+        layer.innerHTML = "";
+        if (!state.treeLightsOn) return;
+        treeLightCoords.forEach(([x, y], i) => {
+          const color = pal[i % pal.length];
+          const b = computeBulbBrightness(i, state.lightMode === "off" ? "twinkle" : state.lightMode, lightTick);
+          const glow = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+          glow.setAttribute("cx", x);
+          glow.setAttribute("cy", y);
+          glow.setAttribute("r", "7");
+          glow.setAttribute("fill", color);
+          glow.setAttribute("opacity", String((0.18 + b * 0.32).toFixed(2)));
+          const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+          dot.setAttribute("cx", x);
+          dot.setAttribute("cy", y);
+          dot.setAttribute("r", "3.2");
+          dot.setAttribute("fill", color);
+          dot.setAttribute("opacity", String((0.5 + b * 0.5).toFixed(2)));
+          layer.appendChild(glow);
+          layer.appendChild(dot);
+        });
+      }
+
+      function renderTreeOrnaments() {
+        const layer = document.getElementById("treeOrnamentsLayer");
+        layer.innerHTML = "";
+        document.getElementById("treeTopperIcon").textContent = state.topper || "⭐";
+        document.getElementById("ornCountBadge").textContent = `${state.ornaments.length} ornament${state.ornaments.length === 1 ? "" : "s"} hung`;
+        document.getElementById("toggleTreeLightsBtn").textContent = `💡 Tree Lights: ${state.treeLightsOn ? "ON" : "OFF"}`;
+
+        document.querySelectorAll("#topperPills .pill-btn").forEach((b) =>
+          b.classList.toggle("active", b.dataset.topper === state.topper)
+        );
+
+        state.ornaments.forEach((o, idx) => {
+          const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+          g.style.cursor = "pointer";
+          g.setAttribute("transform", `translate(${o.x}, ${o.y})`);
+          const icon = document.createElementNS("http://www.w3.org/2000/svg", "text");
+          icon.setAttribute("x", "0");
+          icon.setAttribute("y", "8");
+          icon.setAttribute("text-anchor", "middle");
+          icon.setAttribute("font-size", "22");
+          icon.textContent = o.emo;
+          g.appendChild(icon);
+
+          if (o.name) {
+            const pill = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+            const w = Math.max(38, o.name.length * 6.5 + 10);
+            pill.setAttribute("x", -w / 2);
+            pill.setAttribute("y", "11");
+            pill.setAttribute("width", w);
+            pill.setAttribute("height", "15");
+            pill.setAttribute("rx", "7");
+            pill.setAttribute("fill", "rgba(14, 35, 28, 0.85)");
+            pill.setAttribute("stroke", "#e7c677");
+            pill.setAttribute("stroke-width", "0.8");
+            const lbl = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            lbl.setAttribute("x", "0");
+            lbl.setAttribute("y", "22");
+            lbl.setAttribute("text-anchor", "middle");
+            lbl.setAttribute("font-size", "9.5");
+            lbl.setAttribute("fill", "#fff8e8");
+            lbl.setAttribute("font-family", "sans-serif");
+            lbl.textContent = o.name;
+            g.appendChild(pill);
+            g.appendChild(lbl);
+          }
+
+          g.addEventListener("click", (e) => {
+            e.stopPropagation();
+            state.ornaments.splice(idx, 1);
+            saveState();
+            renderTreeOrnaments();
+            playChime(440, 0.14, 0.04);
+          });
+          layer.appendChild(g);
+        });
+      }
+
+      document.querySelectorAll("#ornPalette .orn-pick").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          selectedOrn = btn.dataset.orn;
+          document.querySelectorAll("#ornPalette .orn-pick").forEach((b) => b.classList.remove("selected"));
+          btn.classList.add("selected");
+          playChime(740, 0.12, 0.04);
+        });
+      });
+
+      document.querySelectorAll("#topperPills .pill-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          state.topper = btn.dataset.topper;
+          saveState();
+          renderTreeOrnaments();
+          playChord([659, 880, 1046]);
+        });
+      });
+
+      document.getElementById("familyTreeSvg").addEventListener("click", (e) => {
+        const svg = e.currentTarget;
+        const pt = svg.createSVGPoint();
+        pt.x = e.clientX;
+        pt.y = e.clientY;
+        const loc = pt.matrixTransform(svg.getScreenCTM().inverse());
+        // Keep inside approximate pine triangle
+        if (loc.y < 68 || loc.y > 350) {
+          showToast("Tap on the green pine branches to hang your ornament! 🎄");
+          return;
+        }
+        const maxHalfW = ((loc.y - 55) / 300) * 126 + 10;
+        if (Math.abs(loc.x - 180) > maxHalfW) {
+          showToast("Try clicking a little closer to the tree branches! 🎄");
+          return;
+        }
+        const tag = document.getElementById("ornNameInput").value.trim().slice(0, 16);
+        state.ornaments.push({ x: Math.round(loc.x), y: Math.round(loc.y), emo: selectedOrn, name: tag });
+        saveState();
+        renderTreeOrnaments();
+        playChime(880 + Math.random() * 240, 0.22, 0.06);
+      });
+
+      document.getElementById("toggleTreeLightsBtn").addEventListener("click", () => {
+        state.treeLightsOn = !state.treeLightsOn;
+        saveState();
+        renderTreeOrnaments();
+        renderLightsTick();
+      });
+
+      document.getElementById("undoOrnBtn").addEventListener("click", () => {
+        if (state.ornaments.length) {
+          state.ornaments.pop();
+          saveState();
+          renderTreeOrnaments();
+        }
+      });
+
+      document.getElementById("clearTreeBtn").addEventListener("click", () => {
+        state.ornaments = [];
+        saveState();
+        renderTreeOrnaments();
+        showToast("Tree cleared — ready for fresh decorating!");
+      });
+
+      /* ==================== GAMES ARCADE SUBTABS ==================== */
+      document.querySelectorAll(".subtab[data-game]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          document.querySelectorAll(".subtab[data-game]").forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          document.querySelectorAll("#sec-games .game-panel").forEach((p) => {
+            p.classList.toggle("active", p.id === "game-" + btn.dataset.game);
+          });
+        });
+      });
+
+      /* ---------- Game 1: Catch the Falling Presents ---------- */
+      const cCanvas = document.getElementById("catcherCanvas");
+      const cCtx = cCanvas.getContext("2d");
+      let cRunning = false;
+      let cScore = 0;
+      let cLives = 3;
+      let sleighX = 340;
+      const sleighW = 92;
+      let drops = [];
+      let spawnTimer = 0;
+      let keys = { left: false, right: false };
+
+      document.getElementById("cBest").textContent = state.catcherBest;
+
+      function updateCatcherHud() {
+        document.getElementById("cScore").textContent = cScore;
+        document.getElementById("cLives").textContent = cLives > 0 ? "❤️".repeat(cLives) : "💔";
+        document.getElementById("cBest").textContent = state.catcherBest;
+      }
+
+      function startCatcher() {
+        cRunning = true;
+        cScore = 0;
+        cLives = 3;
+        sleighX = 340;
+        drops = [];
+        spawnTimer = 0;
+        updateCatcherHud();
+        document.getElementById("cStartBtn").textContent = "🔄 Restart";
+        playChord([523, 659, 784]);
+      }
+
+      document.getElementById("cStartBtn").addEventListener("click", startCatcher);
+
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowLeft" || e.key === "a" || e.key === "A") keys.left = true;
+        if (e.key === "ArrowRight" || e.key === "d" || e.key === "D") keys.right = true;
+      });
+      window.addEventListener("keyup", (e) => {
+        if (e.key === "ArrowLeft" || e.key === "a" || e.key === "A") keys.left = false;
+        if (e.key === "ArrowRight" || e.key === "d" || e.key === "D") keys.right = false;
+      });
+
+      function moveSleighFromClientX(clientX) {
+        const rect = cCanvas.getBoundingClientRect();
+        const rel = ((clientX - rect.left) / rect.width) * cCanvas.width;
+        sleighX = Math.max(sleighW / 2, Math.min(cCanvas.width - sleighW / 2, rel));
+      }
+      cCanvas.addEventListener("mousemove", (e) => { if (cRunning) moveSleighFromClientX(e.clientX); });
+      cCanvas.addEventListener("touchmove", (e) => {
+        if (cRunning && e.touches[0]) {
+          e.preventDefault();
+          moveSleighFromClientX(e.touches[0].clientX);
+        }
+      }, { passive: false });
+
+      function drawCatcherFrame() {
+        // Sky gradient
+        const grad = cCtx.createLinearGradient(0, 0, 0, cCanvas.height);
+        grad.addColorStop(0, "#0b1a2a");
+        grad.addColorStop(1, "#18394a");
+        cCtx.fillStyle = grad;
+        cCtx.fillRect(0, 0, cCanvas.width, cCanvas.height);
+
+        // Snow floor
+        cCtx.fillStyle = "#e8f2f8";
+        cCtx.fillRect(0, cCanvas.height - 26, cCanvas.width, 26);
+
+        if (cRunning) {
+          if (keys.left) sleighX -= 6.5;
+          if (keys.right) sleighX += 6.5;
+          sleighX = Math.max(sleighW / 2, Math.min(cCanvas.width - sleighW / 2, sleighX));
+
+          spawnTimer++;
+          const rate = Math.max(24, 52 - Math.floor(cScore / 45));
+          if (spawnTimer >= rate) {
+            spawnTimer = 0;
+            const r = Math.random();
+            let item = { emo: "🎁", pts: 10, coal: false };
+            if (r > 0.84) item = { emo: "⭐", pts: 25, coal: false };
+            else if (r > 0.65) item = { emo: "🍬", pts: 15, coal: false };
+            else if (r < 0.22) item = { emo: "🪨", pts: 0, coal: true };
+            drops.push({
+              x: 34 + Math.random() * (cCanvas.width - 68),
+              y: -20,
+              vy: 2.3 + Math.random() * 1.4 + Math.min(2.8, cScore / 180),
+              ...item
+            });
+          }
+
+          for (let i = drops.length - 1; i >= 0; i--) {
+            const d = drops[i];
+            d.y += d.vy;
+            // Check catch
+            if (d.y >= cCanvas.height - 62 && d.y <= cCanvas.height - 22 && Math.abs(d.x - sleighX) < sleighW * 0.56) {
+              if (d.coal) {
+                cLives--;
+                playChime(190, 0.3, 0.09);
+                if (cLives <= 0) {
+                  cRunning = false;
+                  if (cScore > state.catcherBest) {
+                    state.catcherBest = cScore;
+                    saveState();
+                    showToast("🏆 New Beard Family High Score: " + cScore + "!");
+                  }
+                }
+              } else {
+                cScore += d.pts;
+                if (cScore > state.catcherBest) {
+                  state.catcherBest = cScore;
+                  saveState();
+                }
+                playChime(d.pts >= 25 ? 1175 : 880, 0.16, 0.05);
+              }
+              updateCatcherHud();
+              drops.splice(i, 1);
+              continue;
+            }
+            if (d.y > cCanvas.height + 20) {
+              drops.splice(i, 1);
+            }
+          }
+        }
+
+        // Draw falling items
+        cCtx.font = "28px sans-serif";
+        cCtx.textAlign = "center";
+        for (const d of drops) {
+          cCtx.fillText(d.emo, d.x, d.y);
+        }
+
+        // Draw Sleigh
+        cCtx.save();
+        cCtx.translate(sleighX, cCanvas.height - 42);
+        cCtx.fillStyle = "#b82930";
+        cCtx.beginPath();
+        cCtx.roundRect(-42, -12, 84, 24, 8);
+        cCtx.fill();
+        cCtx.strokeStyle = "#e7c677";
+        cCtx.lineWidth = 3;
+        cCtx.beginPath();
+        cCtx.moveTo(-48, 16);
+        cCtx.lineTo(48, 16);
+        cCtx.stroke();
+        cCtx.font = "22px sans-serif";
+        cCtx.fillText("🎅", 0, -8);
+        cCtx.restore();
+
+        if (!cRunning) {
+          cCtx.fillStyle = "rgba(10, 24, 34, 0.62)";
+          cCtx.fillRect(0, 0, cCanvas.width, cCanvas.height);
+          cCtx.fillStyle = "#fff8eb";
+          cCtx.font = "bold 28px Georgia, serif";
+          cCtx.fillText(cLives <= 0 ? "Sleigh Ride Complete!" : "Catch the Falling Presents!", cCanvas.width / 2, 162);
+          cCtx.font = "17px system-ui, sans-serif";
+          cCtx.fillStyle = "#e7c677";
+          cCtx.fillText(
+            cLives <= 0 ? `Final Score: ${cScore}  •  Beard Family Best: ${state.catcherBest}` : "Press 'Start Game' above to launch Santa's sleigh!",
+            cCanvas.width / 2,
+            200
+          );
+        }
+
+        requestAnimationFrame(drawCatcherFrame);
+      }
+      updateCatcherHud();
+      drawCatcherFrame();
+
+      /* ---------- Game 2: Holiday Memory Match ---------- */
+      const MEM_ITEMS = [
+        { emo: "⛄", lbl: "Snowman" },
+        { emo: "🦌", lbl: "Reindeer" },
+        { emo: "☕", lbl: "Cocoa" },
+        { emo: "🎄", lbl: "Pine Tree" },
+        { emo: "🍪", lbl: "Cookie" },
+        { emo: "🛷", lbl: "Sleigh" },
+        { emo: "🧦", lbl: "Stocking" },
+        { emo: "🔔", lbl: "Bell" }
+      ];
+
+      let memPairTarget = 6;
+      let memFlipped = [];
+      let memLock = false;
+      let memMoves = 0;
+      let memPairs = 0;
+
+      function startMemory(pairsCount) {
+        memPairTarget = pairsCount;
+        memFlipped = [];
+        memLock = false;
+        memMoves = 0;
+        memPairs = 0;
+        document.getElementById("memMoves").textContent = "0";
+        document.getElementById("memPairs").textContent = `0 / ${pairsCount}`;
+        document.getElementById("memWinBanner").style.display = "none";
+
+        const deck = [...MEM_ITEMS.slice(0, pairsCount), ...MEM_ITEMS.slice(0, pairsCount)]
+          .sort(() => Math.random() - 0.5);
+
+        const grid = document.getElementById("memoryGrid");
+        grid.innerHTML = "";
+        deck.forEach((item) => {
+          const btn = document.createElement("button");
+          btn.className = "mem-card";
+          btn.type = "button";
+          btn.dataset.lbl = item.lbl;
+          btn.innerHTML = `
+            <div class="mem-inner">
+              <div class="mem-face mem-front">★</div>
+              <div class="mem-face mem-back">
+                <span class="mem-emo">${item.emo}</span>
+                <span class="mem-lbl">${item.lbl}</span>
+              </div>
+            </div>
+          `;
+          btn.addEventListener("click", () => handleMemFlip(btn));
+          grid.appendChild(btn);
+        });
+      }
+
+      function handleMemFlip(card) {
+        if (memLock || card.classList.contains("flipped") || card.classList.contains("matched")) return;
+        card.classList.add("flipped");
+        playChime(660, 0.14, 0.04);
+        memFlipped.push(card);
+
+        if (memFlipped.length === 2) {
+          memMoves++;
+          document.getElementById("memMoves").textContent = String(memMoves);
+          const [a, b] = memFlipped;
+          if (a.dataset.lbl === b.dataset.lbl) {
+            a.classList.add("matched");
+            b.classList.add("matched");
+            memPairs++;
+            document.getElementById("memPairs").textContent = `${memPairs} / ${memPairTarget}`;
+            memFlipped = [];
+            playChord([784, 987]);
+            if (memPairs === memPairTarget) {
+              const banner = document.getElementById("memWinBanner");
+              banner.style.display = "block";
+              banner.textContent = `🎉 Ho Ho Ho! You matched all ${memPairTarget} pairs in ${memMoves} moves!`;
+              playChord([523, 659, 784, 1046]);
+            }
+          } else {
+            memLock = true;
+            setTimeout(() => {
+              a.classList.remove("flipped");
+              b.classList.remove("flipped");
+              memFlipped = [];
+              memLock = false;
+            }, 720);
+          }
+        }
+      }
+
+      document.getElementById("memEasyBtn").addEventListener("click", () => startMemory(6));
+      document.getElementById("memHardBtn").addEventListener("click", () => startMemory(8));
+      startMemory(6);
+
+      /* ---------- Game 3: Beard Family Holiday Trivia ---------- */
+      const TRIVIA = [
+        { q: "In 'The Twelve Days of Christmas', how many Lords a-Leaping are there?", opts: ["8", "10", "12", "9"], ans: 1, fact: "There are 10 Lords a-Leaping — right after 9 Ladies Dancing!" },
+        { q: "Which reindeer's name starts with a 'C'?", opts: ["Cupid & Comet", "Cracker & Comet", "Claus & Cupid", "Cinnamon & Comet"], ans: 0, fact: "Both Comet and Cupid fly on Santa's team!" },
+        { q: "What traditional Christmas decoration is actually a parasitic plant?", opts: ["Holly", "Poinsettia", "Mistletoe", "Garland"], ans: 2, fact: "Mistletoe grows on host trees and became a symbol of holiday goodwill." },
+        { q: "In what country did the tradition of decorating Christmas trees begin?", opts: ["France", "Germany", "Norway", "England"], ans: 1, fact: "16th-century Germany popularized evergreen trees lit with candles." },
+        { q: "What beverage company helped popularize the modern red-and-white Santa suit in the 1930s?", opts: ["Pepsi", "Coca-Cola", "Hershey's", "Nestlé"], ans: 1, fact: "Illustrator Haddon Sundblom painted rosy-cheeked Santa ads for Coca-Cola starting in 1931." },
+        { q: "In the movie 'Elf', what are the four main food groups for elves?", opts: ["Candy, candy canes, candy corns, and syrup", "Cookies, cocoa, gingerbread, and pie", "Sugar, spice, peppermint, and frosting", "Waffles, marshmallows, fudge, and milk"], ans: 0, fact: "Buddy the Elf swears by candy, candy canes, candy corns, and syrup!" },
+        { q: "How many ghosts visit Ebenezer Scrooge in 'A Christmas Carol'?", opts: ["3", "4", "5", "2"], ans: 1, fact: "Four! Jacob Marley plus the Ghosts of Christmas Past, Present, and Yet to Come." },
+        { q: "Which holiday song was the very first song broadcast from space in 1965?", opts: ["Silent Night", "White Christmas", "Jingle Bells", "Deck the Halls"], ans: 2, fact: "Gemini 6 astronauts played 'Jingle Bells' on a tiny harmonica and sleigh bells!" },
+        { q: "What magical item brings Frosty the Snowman to life?", opts: ["A red scarf", "An old silk hat", "A corncob pipe", "A golden button"], ans: 1, fact: "'There must have been some magic in that old silk hat they found!'" },
+        { q: "What do people in Sweden traditionally watch together on Christmas Eve afternoon?", opts: ["Donald Duck cartoons", "Ice skating races", "The Nutcracker", "Reindeer parades"], ans: 0, fact: "Millions of Swedish families watch 'Kalle Anka' (Donald Duck) every Dec 24 at 3 PM!" }
+      ];
+
+      let tIdx = 0;
+      let tScore = 0;
+
+      function renderTrivia() {
+        const nextBtn = document.getElementById("triviaNextBtn");
+        const restartBtn = document.getElementById("triviaRestartBtn");
+        const fb = document.getElementById("triviaFeedback");
+        const optsEl = document.getElementById("triviaOptions");
+
+        if (tIdx >= TRIVIA.length) {
+          document.getElementById("triviaProgress").textContent = "Trivia Complete!";
+          const title = tScore >= 8 ? "🏆 Head Elf of the Beard Family!" : (tScore >= 5 ? "🎄 Certified Holiday Cheer Captain!" : "☕ Cozy Cocoa Enthusiast!");
+          document.getElementById("triviaQuestion").textContent = `You scored ${tScore} out of ${TRIVIA.length}! ${title}`;
+          optsEl.innerHTML = "";
+          fb.textContent = "Great job! Challenge another Beard family member to beat your score.";
+          nextBtn.style.display = "none";
+          restartBtn.style.display = "inline-flex";
+          return;
+        }
+
+        const item = TRIVIA[tIdx];
+        document.getElementById("triviaProgress").textContent = `Question ${tIdx + 1} of ${TRIVIA.length}`;
+        document.getElementById("triviaScore").textContent = String(tScore);
+        document.getElementById("triviaQuestion").textContent = item.q;
+        fb.textContent = "";
+        nextBtn.style.display = "none";
+        restartBtn.style.display = "none";
+        optsEl.innerHTML = "";
+
+        item.opts.forEach((opt, i) => {
+          const b = document.createElement("button");
+          b.className = "trivia-opt";
+          b.textContent = opt;
+          b.addEventListener("click", () => {
+            optsEl.querySelectorAll(".trivia-opt").forEach((btn, bi) => {
+              btn.disabled = true;
+              if (bi === item.ans) btn.classList.add("correct");
+            });
+            if (i === item.ans) {
+              tScore++;
+              document.getElementById("triviaScore").textContent = String(tScore);
+              fb.textContent = "✅ Spot on! " + item.fact;
+              playChord([784, 1046]);
+            } else {
+              b.classList.add("wrong");
+              fb.textContent = "❄️ Good guess! " + item.fact;
+              playChime(280, 0.25, 0.06);
+            }
+            nextBtn.style.display = "inline-flex";
+          });
+          optsEl.appendChild(b);
+        });
+      }
+
+      document.getElementById("triviaNextBtn").addEventListener("click", () => {
+        tIdx++;
+        renderTrivia();
+      });
+      document.getElementById("triviaRestartBtn").addEventListener("click", () => {
+        tIdx = 0;
+        tScore = 0;
+        renderTrivia();
+      });
+      renderTrivia();
+
+      /* ==================== SANTA LETTERS ==================== */
+      const NICE_LABELS = {
+        1: "A Little Mischievous (Still Cute!) 😄",
+        2: "Trying Really Hard! 🌟",
+        3: "Very Nice! 🎁",
+        4: "Extra Nice! 😇",
+        5: "Certified Christmas Angel! ✨"
+      };
+
+      const niceSlider = document.getElementById("niceSlider");
+      niceSlider.addEventListener("input", () => {
+        document.getElementById("niceLabel").textContent = NICE_LABELS[niceSlider.value];
+      });
+
+      function escapeHtml(str) {
+        return String(str)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      function buildSantaReply(letter) {
+        const deedLine = letter.goodDeed
+          ? `Mrs. Claus and I beamed with pride when we read how you "${escapeHtml(letter.goodDeed)}." That kind of Beard family heart makes the Northern Lights shine twice as bright!`
+          : `The workshop elves told me the Beard home has been overflowing with kindness and laughter this year!`;
+        return `
+          <p>Dear <strong>${escapeHtml(letter.writer)}</strong>,</p>
+          <p>Ho, ho, ho! Thank you so much for sending your wonderful letter all the way to the North Pole${letter.age ? ` (and what a splendid age ${escapeHtml(letter.age)} is!)` : ""}. I checked my ledger twice, and your name is glowing bright gold on the <strong>Nice List</strong> (${escapeHtml(letter.niceText)}).</p>
+          <p>${deedLine}</p>
+          <p>I have passed your special wish for <em>"${escapeHtml(letter.wish)}"</em> straight over to Bernard the Head Elf in the Toy Workshop. Rudolph says to please leave a crunchy carrot by the cookies on Christmas Eve!</p>
+          <p style="margin-bottom:0;">With snowy hugs and jingling bells,<br /><strong>Santa Claus 🎅</strong></p>
+        `;
+      }
+
+      function renderMailbox() {
+        const list = document.getElementById("mailboxList");
+        document.getElementById("mailCountLabel").textContent = `${state.letters.length} letter${state.letters.length === 1 ? "" : "s"}`;
+        if (!state.letters.length) {
+          list.innerHTML = `<div style="font-size:13.5px; color:var(--ink-muted); padding:10px 0;">No letters sent yet — write the first Beard family letter to Santa!</div>`;
+          return;
+        }
+        list.innerHTML = "";
+        state.letters.forEach((l, idx) => {
+          const item = document.createElement("div");
+          item.className = "mail-item";
+          item.innerHTML = `
+            <div>
+              <strong style="color:var(--pine-deep);">${escapeHtml(l.writer)}</strong>
+              <span style="font-size:12px; color:var(--ink-muted);"> • ${escapeHtml(l.date)}</span>
+              <div style="font-size:13px; color:var(--crimson); font-weight:600; margin-top:2px;">Wish: ${escapeHtml(l.wish)}</div>
+              <div style="font-size:13px; color:var(--ink-muted); margin-top:2px;">"${escapeHtml(l.body.slice(0, 90))}${l.body.length > 90 ? "…" : ""}"</div>
+            </div>
+            <button class="btn btn-outline btn-sm" type="button">Read Reply</button>
+          `;
+          item.querySelector("button").addEventListener("click", () => {
+            document.getElementById("santaReplyContent").innerHTML = buildSantaReply(state.letters[idx]);
+            playChime(880, 0.2, 0.05);
+          });
+          list.appendChild(item);
+        });
+      }
+
+      document.getElementById("santaForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const letter = {
+          writer: document.getElementById("santaWriter").value.trim(),
+          age: document.getElementById("santaAge").value.trim(),
+          niceText: NICE_LABELS[niceSlider.value],
+          goodDeed: document.getElementById("santaGoodDeed").value.trim(),
+          wish: document.getElementById("santaWish").value.trim(),
+          body: document.getElementById("santaBody").value.trim(),
+          date: new Date().toLocaleDateString(undefined, { month: "short", day: "numeric" })
+        };
+        state.letters.unshift(letter);
+        saveState();
+        document.getElementById("santaReplyContent").innerHTML = buildSantaReply(letter);
+        renderMailbox();
+        e.target.reset();
+        niceSlider.value = "4";
+        document.getElementById("niceLabel").textContent = NICE_LABELS[4];
+        playChord([523, 659, 784, 1046]);
+        showToast("🛷 Sealed & flown to the North Pole! Santa wrote back!");
+      });
+
+      document.getElementById("printSantaReplyBtn").addEventListener("click", () => window.print());
+      renderMailbox();
+
+      /* ==================== BEARD FAMILY WISH LIST ==================== */
+      let activeWishFilter = "All";
+      let helperMode = false;
+
+      function renderWishList() {
+        const people = ["All", ...Array.from(new Set(state.wishes.map((w) => w.person)))];
+        if (!people.includes(activeWishFilter)) activeWishFilter = "All";
+
+        const pillsEl = document.getElementById("wishFilterPills");
+        pillsEl.innerHTML = "";
+        people.forEach((p) => {
+          const btn = document.createElement("button");
+          btn.className = "pill-btn" + (p === activeWishFilter ? " active" : "");
+          btn.textContent = p;
+          btn.addEventListener("click", () => {
+            activeWishFilter = p;
+            renderWishList();
+          });
+          pillsEl.appendChild(btn);
+        });
+
+        const filtered = activeWishFilter === "All"
+          ? state.wishes
+          : state.wishes.filter((w) => w.person === activeWishFilter);
+
+        document.getElementById("wishCountLabel").textContent = `${filtered.length} wish${filtered.length === 1 ? "" : "es"}`;
+        document.getElementById("helperBanner").style.display = helperMode ? "block" : "none";
+        document.getElementById("helperModeBtn").textContent = `🕵️ Santa's Helper Mode: ${helperMode ? "ON" : "OFF"}`;
+
+        const container = document.getElementById("wishListContainer");
+        container.innerHTML = "";
+        if (!filtered.length) {
+          container.innerHTML = `<div style="padding:18px; text-align:center; color:var(--ink-muted);">No wishes here yet — add a Christmas idea on the left!</div>`;
+          return;
+        }
+
+        filtered.forEach((w) => {
+          const card = document.createElement("div");
+          card.className = "wish-item" + (helperMode && w.claimed ? " is-claimed" : "");
+          const prioClass = w.priority === "Dream Gift" ? "badge-crimson" : (w.priority === "Would Love" ? "badge-gold" : "badge-pine");
+          card.innerHTML = `
+            <div>
+              <div style="display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-bottom:5px;">
+                <span class="badge badge-pine">${escapeHtml(w.person)}</span>
+                <span class="badge ${prioClass}">${escapeHtml(w.priority)}</span>
+                <span style="font-size:12px; color:var(--ink-muted);">${escapeHtml(w.category)}</span>
+                ${helperMode && w.claimed ? '<span class="badge" style="background:#d6f1df; color:#14522d;">✓ Claimed</span>' : ""}
+              </div>
+              <strong style="font-size:16px; color:var(--pine-deep);">${escapeHtml(w.item)}</strong>
+              ${w.note ? `<div style="font-size:13px; color:var(--ink-muted); margin-top:3px;">Note: ${escapeHtml(w.note)}</div>` : ""}
+            </div>
+            <div style="display:flex; gap:6px; flex-shrink:0;" class="no-print">
+              ${helperMode ? `<button class="btn btn-outline btn-sm claim-btn">${w.claimed ? "Unclaim" : "🎁 Claim"}</button>` : ""}
+              <button class="btn btn-outline btn-sm del-btn" title="Remove wish">✕</button>
+            </div>
+          `;
+          const claimBtn = card.querySelector(".claim-btn");
+          if (claimBtn) {
+            claimBtn.addEventListener("click", () => {
+              w.claimed = !w.claimed;
+              saveState();
+              renderWishList();
+              playChime(w.claimed ? 987 : 523, 0.18, 0.05);
+            });
+          }
+          card.querySelector(".del-btn").addEventListener("click", () => {
+            state.wishes = state.wishes.filter((item) => item.id !== w.id);
+            saveState();
+            renderWishList();
+          });
+          container.appendChild(card);
+        });
+      }
+
+      document.getElementById("wishForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        state.wishes.unshift({
+          id: "w_" + Date.now(),
+          person: document.getElementById("wishPerson").value.trim(),
+          item: document.getElementById("wishItem").value.trim(),
+          category: document.getElementById("wishCategory").value,
+          priority: document.getElementById("wishPriority").value,
+          note: document.getElementById("wishNote").value.trim(),
+          claimed: false
+        });
+        saveState();
+        renderWishList();
+        document.getElementById("wishItem").value = "";
+        document.getElementById("wishNote").value = "";
+        playChime(880, 0.2, 0.05);
+        showToast("🎁 Added to the Beard Family Wish List!");
+      });
+
+      document.getElementById("helperModeBtn").addEventListener("click", () => {
+        helperMode = !helperMode;
+        renderWishList();
+        showToast(helperMode ? "🕵️ Santa's Helper Mode enabled (no kids peeking!)" : "Santa's Helper Mode hidden");
+      });
+
+      document.getElementById("printWishBtn").addEventListener("click", () => window.print());
+      renderWishList();
+
+      /* ==================== THANK YOU STUDIO & GRATITUDE WALL ==================== */
+      let tyTheme = "holly";
+      const TY_ICONS = { holly: "🌿", pine: "🌲", northpole: "📮", cocoa: "☕" };
+
+      function updateTyPreview() {
+        const to = document.getElementById("tyTo").value.trim() || "Dear Friend";
+        const from = document.getElementById("tyFrom").value.trim() || "The Beard Family";
+        const gift = document.getElementById("tyGift").value.trim() || "your thoughtful Christmas gift";
+        const msg = document.getElementById("tyMessage").value.trim() || "Wishing you warmth and joy all year long!";
+
+        const card = document.getElementById("tyPreviewCard");
+        card.className = "ty-preview theme-" + tyTheme;
+        document.getElementById("tyIcon").textContent = TY_ICONS[tyTheme];
+        document.getElementById("tyPreviewTo").textContent = `Dear ${to},`;
+        document.getElementById("tyPreviewGift").textContent = `Thank you so very much for ${gift}!`;
+        document.getElementById("tyPreviewMsg").textContent = msg;
+        document.getElementById("tyPreviewFrom").textContent = `With love & cheer, ${from}`;
+      }
+
+      ["tyTo", "tyFrom", "tyGift", "tyMessage"].forEach((id) => {
+        document.getElementById(id).addEventListener("input", updateTyPreview);
+      });
+
+      document.querySelectorAll("#tyThemePills .pill-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          tyTheme = btn.dataset.tytheme;
+          document.querySelectorAll("#tyThemePills .pill-btn").forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          updateTyPreview();
+          playChime(784, 0.14, 0.04);
+        });
+      });
+
+      document.querySelectorAll(".ty-starter").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          document.getElementById("tyMessage").value = btn.dataset.msg;
+          updateTyPreview();
+        });
+      });
+
+      function renderGratitudeWall() {
+        const wall = document.getElementById("gratitudeWall");
+        wall.innerHTML = "";
+        state.gratitude.forEach((g) => {
+          const el = document.createElement("div");
+          el.className = "gratitude-note";
+          el.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+              <strong style="font-family:var(--font-display); color:var(--crimson); font-size:16px;">To: ${escapeHtml(g.to)}</strong>
+              <button class="btn btn-outline btn-sm no-print" style="padding:2px 7px; font-size:11px;" title="Remove note">✕</button>
+            </div>
+            <p style="margin:0; font-size:14px; color:var(--ink); line-height:1.5;">${escapeHtml(g.text)}</p>
+            <div style="margin-top:auto; padding-top:8px; font-size:12.5px; color:var(--ink-muted); display:flex; justify-content:space-between;">
+              <span>— ${escapeHtml(g.from)}</span>
+              <span>${escapeHtml(g.date)}</span>
+            </div>
+          `;
+          el.querySelector("button").addEventListener("click", () => {
+            state.gratitude = state.gratitude.filter((item) => item.id !== g.id);
+            saveState();
+            renderGratitudeWall();
+          });
+          wall.appendChild(el);
+        });
+      }
+
+      document.getElementById("saveThanksBtn").addEventListener("click", () => {
+        const to = document.getElementById("tyTo").value.trim() || "Dear Friend";
+        const from = document.getElementById("tyFrom").value.trim() || "The Beard Family";
+        const gift = document.getElementById("tyGift").value.trim();
+        const msg = document.getElementById("tyMessage").value.trim();
+        const fullText = (gift ? `Thank you for ${gift}! ` : "") + msg;
+        state.gratitude.unshift({
+          id: "g_" + Date.now(),
+          to,
+          from,
+          text: fullText,
+          date: new Date().toLocaleDateString(undefined, { month: "short", day: "numeric" })
+        });
+        saveState();
+        renderGratitudeWall();
+        playChord([659, 784, 987]);
+        showToast("💌 Pinned to the Beard Family Gratitude Wall!");
+      });
+
+      document.getElementById("copyThanksBtn").addEventListener("click", () => {
+        const to = document.getElementById("tyTo").value.trim();
+        const from = document.getElementById("tyFrom").value.trim();
+        const gift = document.getElementById("tyGift").value.trim();
+        const msg = document.getElementById("tyMessage").value.trim();
+        const text = `Dear ${to},\n\nThank you so very much for ${gift}! ${msg}\n\nWith love & Christmas cheer,\n${from}`;
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(text).then(() => showToast("📋 Thank-you note copied to clipboard!"));
+        } else {
+          showToast("Ready to print or copy your note!");
+        }
+      });
+
+      document.getElementById("printThanksBtn").addEventListener("click", () => window.print());
+      updateTyPreview();
+      renderGratitudeWall();
+
+      /* ==================== EXTRAS: ADVENT, SECRET SANTA, CERTIFICATE ==================== */
+      document.querySelectorAll(".subtab[data-extra]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          document.querySelectorAll(".subtab[data-extra]").forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          document.querySelectorAll("#sec-extras .game-panel").forEach((p) => {
+            p.classList.toggle("active", p.id === "extra-" + btn.dataset.extra);
+          });
+        });
+      });
+
+      /* ---------- 24-Day Advent Calendar ---------- */
+      const ADVENT_DAYS = [
+        "☕ Hot cocoa bar with whipped cream & extra marshmallows!",
+        "🎵 Play Christmas carols while making dinner tonight.",
+        "❄️ Cut paper snowflakes to tape in the windows.",
+        "😂 Holiday Joke: What do snowmen eat for breakfast? Frosted Flakes!",
+        "🍪 Bake (or decorate!) a batch of Beard family sugar cookies.",
+        "🚗 Take an evening drive to look at neighborhood Christmas lights.",
+        "📖 Read a favorite holiday story together by the tree.",
+        "🧦 Everyone wears their silliest holiday socks today!",
+        "🎬 Cozy Christmas movie night in pajamas with popcorn.",
+        "💌 Mail or hand-deliver a surprise holiday card to a neighbor.",
+        "🕯️ Turn off the big lights and eat dinner by candlelight or tree lights.",
+        "🎨 Draw a portrait of Santa's funniest reindeer.",
+        "😂 Holiday Joke: Why does Santa go down the chimney? Because it soots him!",
+        "🏰 Build a living room blanket fort for afternoon cocoa.",
+        "🎁 Pick a gently used toy or coat to donate to someone in need.",
+        "🎶 Sing 'Jingle Bells' at the top of your lungs together!",
+        "🍬 Have a candy-cane scavenger hunt around the house.",
+        "📸 Take a goofy Beard Family Christmas selfie together!",
+        "🌟 Tell each family member one thing you appreciate about them.",
+        "🎲 Beard Family Board Game Championship night!",
+        "🍊 Simmer cinnamon sticks & orange peels to make the house smell like Christmas.",
+        "✉️ Double-check everyone's Letters to Santa in the North Pole Post Office.",
+        "🛌 Open one early Christmas Eve pajama or book gift!",
+        "🎅 Christmas Eve! Set out cookies for Santa, carrots for Rudolph & listen for bells!"
+      ];
+
+      let adventPreviewAll = true;
+
+      function renderAdvent() {
+        const grid = document.getElementById("adventGrid");
+        const now = new Date();
+        const isDec = now.getMonth() === 11;
+        const todayDate = now.getDate();
+
+        document.getElementById("adventModeBtn").textContent = adventPreviewAll
+          ? "🔓 Preview All Doors: ON"
+          : "🔒 Strict December Dates: ON";
+
+        grid.innerHTML = "";
+        ADVENT_DAYS.forEach((surprise, i) => {
+          const day = i + 1;
+          const isOpened = state.adventOpened.includes(day);
+          const isUnlocked = adventPreviewAll || (isDec && todayDate >= day);
+
+          const btn = document.createElement("button");
+          btn.className = "advent-door" + (isOpened ? " opened" : "") + (!isUnlocked ? " locked" : "");
+          btn.innerHTML = isOpened
+            ? `<span style="font-size:11px; color:var(--crimson); font-weight:800;">DAY ${day}</span><span style="line-height:1.25;">${surprise.slice(0, 44)}${surprise.length > 44 ? "…" : ""}</span>`
+            : `<span>${day}</span><span style="font-size:11px; font-family:var(--font-sans); opacity:0.8;">${isUnlocked ? "Open" : "🔒 Dec " + day}</span>`;
+
+          btn.addEventListener("click", () => {
+            if (!isUnlocked) {
+              showToast(`Wait until December ${day} — or turn Preview All Doors ON!`);
+              return;
+            }
+            if (!state.adventOpened.includes(day)) {
+              state.adventOpened.push(day);
+              saveState();
+            }
+            const banner = document.getElementById("adventRevealBanner");
+            banner.style.display = "block";
+            banner.innerHTML = `<strong style="color:var(--crimson); font-family:var(--font-display); font-size:18px;">🎄 Day ${day} Surprise:</strong> <span style="font-size:15px;">${escapeHtml(surprise)}</span>`;
+            playChord([659, 880, 1046]);
+            renderAdvent();
+          });
+          grid.appendChild(btn);
+        });
+      }
+
+      document.getElementById("adventModeBtn").addEventListener("click", () => {
+        adventPreviewAll = !adventPreviewAll;
+        renderAdvent();
+      });
+
+      document.getElementById("adventResetBtn").addEventListener("click", () => {
+        state.adventOpened = [];
+        saveState();
+        document.getElementById("adventRevealBanner").style.display = "none";
+        renderAdvent();
+      });
+      renderAdvent();
+
+      /* ---------- Secret Santa Spinner ---------- */
+      document.getElementById("ssDrawBtn").addEventListener("click", () => {
+        const names = document.getElementById("ssNamesInput").value
+          .split("\n")
+          .map((n) => n.trim())
+          .filter(Boolean);
+
+        if (names.length < 3) {
+          showToast("Please enter at least 3 Beard family members!");
+          return;
+        }
+
+        // Fisher-Yates derangement (nobody gets themselves)
+        let receivers = [...names];
+        let valid = false;
+        for (let tries = 0; tries < 200; tries++) {
+          receivers = [...names].sort(() => Math.random() - 0.5);
+          if (receivers.every((r, i) => r !== names[i])) {
+            valid = true;
+            break;
+          }
+        }
+        if (!valid) {
+          receivers = [...names.slice(1), names[0]];
+        }
+
+        const results = document.getElementById("ssResults");
+        results.innerHTML = "";
+        names.forEach((giver, idx) => {
+          const rec = receivers[idx];
+          const row = document.createElement("div");
+          row.style.cssText = "display:flex; justify-content:space-between; align-items:center; gap:10px; padding:12px 14px; border-radius:12px; background:var(--cream); border:1px solid var(--border);";
+          row.innerHTML = `
+            <div>
+              <strong style="color:var(--pine-deep);">${escapeHtml(giver)}</strong>
+              <div class="ss-reveal" style="font-size:13.5px; color:var(--ink-muted);">Tap 'Peek' to see your match</div>
+            </div>
+            <button class="btn btn-pine btn-sm" type="button">👀 Peek</button>
+          `;
+          let open = false;
+          const btn = row.querySelector("button");
+          const txt = row.querySelector(".ss-reveal");
+          btn.addEventListener("click", () => {
+            open = !open;
+            if (open) {
+              txt.innerHTML = `You are Secret Santa for <strong style="color:var(--crimson);">🎁 ${escapeHtml(rec)}</strong>!`;
+              btn.textContent = "🙈 Hide";
+              playChime(987, 0.2, 0.05);
+            } else {
+              txt.textContent = "Hidden — ready to pass the screen!";
+              btn.textContent = "👀 Peek";
+            }
+          });
+          results.appendChild(row);
+        });
+        playChord([523, 659, 784]);
+        showToast("🎁 Secret Santa matches shuffled!");
+      });
+
+      /* ---------- Nice-List Certificate ---------- */
+      function updateCert() {
+        document.getElementById("certOutName").textContent = document.getElementById("certNameInput").value.trim() || "The Beard Family";
+        document.getElementById("certOutReason").textContent = `"${document.getElementById("certReasonInput").value.trim() || "Spreading joy all year long"}"`;
+        document.getElementById("certOutRank").textContent = document.getElementById("certRankInput").value;
+      }
+      ["certNameInput", "certReasonInput", "certRankInput"].forEach((id) => {
+        document.getElementById(id).addEventListener("input", updateCert);
+        document.getElementById(id).addEventListener("change", updateCert);
+      });
+      document.getElementById("printCertBtn").addEventListener("click", () => window.print());
+      updateCert();
+
+      /* ==================== PRIVATE FAMILY LOGIN ==================== */
+      const AUTH_KEY = "beard_family_christmas_auth_v1";
+
+      function hashSecret(str) {
+        let h1 = 0xdeadbeef ^ str.length;
+        let h2 = 0x41c6ce57 ^ str.length;
+        for (let i = 0; i < str.length; i++) {
+          const ch = str.charCodeAt(i);
+          h1 = Math.imul(h1 ^ ch, 2654435761);
+          h2 = Math.imul(h2 ^ ch, 1597334677);
+        }
+        h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+        h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+        return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(36);
+      }
+
+      // Tip: To change a password later, replace passHash with password: "your-new-password"
+      const FAMILY_ACCOUNTS = {
+        beards: {
+          label: "Beards",
+          greeting: "★ Welcome Home, Beard Family ★",
+          toast: "🎄 Welcome home, Beard Family!",
+          passHash: "tnruidolgd"
+        },
+        ramsurns: {
+          label: "Ramsurns",
+          greeting: "★ Welcome, Ramsurn Family — Guests of Honor ★",
+          toast: "🎄 Welcome to the Beard Family Christmas, Ramsurns!",
+          passHash: "377ga7ahmx"
+        }
+      };
+
+      const beardAppEl = document.getElementById("beardApp");
+      const loginForm = document.getElementById("loginForm");
+      const loginUserInput = document.getElementById("loginUser");
+      const loginPassInput = document.getElementById("loginPass");
+      const loginRememberInput = document.getElementById("loginRemember");
+      const loginErrorEl = document.getElementById("loginError");
+      const loginCardEl = document.getElementById("loginCard");
+      const logoutBtn = document.getElementById("logoutBtn");
+      const heroEyebrowEl = document.getElementById("heroEyebrow");
+      const pwToggleBtn = document.getElementById("pwToggleBtn");
+
+      function unlockApp(accountKey, silent) {
+        const acct = FAMILY_ACCOUNTS[accountKey];
+        if (!acct) return;
+        beardAppEl.classList.remove("is-locked");
+        heroEyebrowEl.textContent = acct.greeting;
+        logoutBtn.textContent = `👤 ${acct.label} · Sign Out`;
+        loginErrorEl.classList.remove("show");
+        if (!silent) {
+          playChord([523, 659, 784, 1046]);
+          showToast(acct.toast);
+        }
+      }
+
+      function lockApp() {
+        try {
+          localStorage.removeItem(AUTH_KEY);
+          sessionStorage.removeItem(AUTH_KEY);
+        } catch (e) { /* ignore storage errors */ }
+        if (musicPlaying) toggleMusic(false);
+        beardAppEl.classList.add("is-locked");
+        loginForm.reset();
+        loginRememberInput.checked = true;
+        loginPassInput.type = "password";
+        pwToggleBtn.textContent = "👁️";
+        loginErrorEl.classList.remove("show");
+        setTimeout(() => loginUserInput.focus(), 40);
+      }
+
+      function verifyAccount(rawUser, rawPass) {
+        const key = rawUser.trim().toLowerCase();
+        const acct = FAMILY_ACCOUNTS[key];
+        if (!acct) return null;
+        if (typeof acct.password === "string") {
+          return rawPass === acct.password ? key : null;
+        }
+        const computed = hashSecret(`beard-xmas::${key}::${rawPass}`);
+        return computed === acct.passHash ? key : null;
+      }
+
+      pwToggleBtn.addEventListener("click", () => {
+        const showing = loginPassInput.type === "text";
+        loginPassInput.type = showing ? "password" : "text";
+        pwToggleBtn.textContent = showing ? "👁️" : "🙈";
+      });
+
+      [loginUserInput, loginPassInput].forEach((inp) => {
+        inp.addEventListener("input", () => loginErrorEl.classList.remove("show"));
+      });
+
+      loginForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const matchedKey = verifyAccount(loginUserInput.value, loginPassInput.value);
+        if (!matchedKey) {
+          loginErrorEl.classList.add("show");
+          loginCardEl.classList.remove("shake");
+          void loginCardEl.offsetWidth;
+          loginCardEl.classList.add("shake");
+          playChime(240, 0.25, 0.06);
+          return;
+        }
+        try {
+          if (loginRememberInput.checked) {
+            localStorage.setItem(AUTH_KEY, matchedKey);
+          } else {
+            sessionStorage.setItem(AUTH_KEY, matchedKey);
+          }
+        } catch (err) { /* ignore storage errors */ }
+        loginForm.reset();
+        unlockApp(matchedKey, false);
+      });
+
+      logoutBtn.addEventListener("click", () => {
+        lockApp();
+        showToast("🔒 Signed out safely. Merry Christmas!");
+      });
+
+      function restoreSession() {
+        let savedKey = null;
+        try {
+          savedKey = localStorage.getItem(AUTH_KEY) || sessionStorage.getItem(AUTH_KEY);
+        } catch (e) { /* ignore */ }
+        if (savedKey && FAMILY_ACCOUNTS[savedKey]) {
+          unlockApp(savedKey, true);
+        } else {
+          beardAppEl.classList.add("is-locked");
+          setTimeout(() => loginUserInput.focus(), 60);
+        }
+      }
+
+      /* ==================== INITIAL SYNC ==================== */
+      syncQuickButtons();
+      syncLightStudioPills();
+      renderTreeOrnaments();
+      renderLightsTick();
+      restoreSession();
+    })();
+  </script>
+</body>
+</html>
